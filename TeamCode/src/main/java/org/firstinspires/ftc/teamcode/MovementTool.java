@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+/*package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.Gamepad;
 
 public class MovementTool {
     static int friction;
@@ -14,4 +13,4 @@ public class MovementTool {
     public void useController(Gamepad gamepadInput){
         
     }
-}
+}*/
