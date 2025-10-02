@@ -13,6 +13,7 @@ public class RobotMain extends OpMode {
     DcMotor motorBottomRight;
 
     private MovementTool movementTool;
+    private  FlyWheelLauncherTool launcherTool;
 
     @Override
     public void init() {
@@ -21,10 +22,15 @@ public class RobotMain extends OpMode {
         motorBottomRight = hardwareMap.get(DcMotor.class, "motorBottomRight");
         motorBottomLeft = hardwareMap.get(DcMotor.class, "motorBottomLeft");
 
+        // motorA = hardwareMap.get(DcMotor.class, "motorA");
+        // motorB = hardwareMap.get(DcMotor.class, "motorB");
+        
+
         motorTopRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBottomRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         movementTool = new MovementTool(motorTopLeft, motorTopRight, motorBottomLeft, motorBottomRight);
+        //launcherTool = new MovementTool(motorA, motorB);
 
         telemetry.addData("Launch Test:", "Successful");
         telemetry.addData("System Version", "1.0");
@@ -34,5 +40,6 @@ public class RobotMain extends OpMode {
     @Override
     public void loop() {
         movementTool.mecanumDrive(gamepad1);
+        if (gamepad1.a) {launcherTool.rotate();}
     }
 }
