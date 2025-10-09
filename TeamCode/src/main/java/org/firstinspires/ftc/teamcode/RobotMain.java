@@ -28,18 +28,32 @@ public class RobotMain extends OpMode {
 
         motorTopRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBottomRight.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        movementTool = new MovementTool(motorTopLeft, motorTopRight, motorBottomLeft, motorBottomRight);
-        //launcherTool = new MovementTool(motorA, motorB);
+        
+        movementTool = (false) ? new MovementTool(motorTopLeft, motorTopRight, motorBottomLeft, motorBottomRight) : null;
+        
+        launcherTool = (false) ? new FlyWheelLauncherTool(motorTopRight, motorTopRight) : null;
+                        
 
         telemetry.addData("Launch Test:", "Successful");
         telemetry.addData("System Version", "1.0");
+        telemetry.addData("Controller One", gamepad1.toString());
         telemetry.update();
     }
 
     @Override
     public void loop() {
-        movementTool.mecanumDrive(gamepad1);
-        if (gamepad1.a) {launcherTool.rotate();}
+        telemetry.addData("Launch Test:", "Successful");
+        telemetry.addData("System Version", "1.0");
+        telemetry.addData("Controller One", gamepad1.toString());
+        telemetry.update();
+        if (movementTool!=null) movementTool.mecanumDrive(gamepad1);
+        if (launcherTool!=null) {
+            if (gamepad1.a) {launcherTool.rotate();}
+        }
+        if (gamepad1.a) {
+            motorTopRight.setPower(-1);
+        } else {
+            motorTopRight.setPower(0);
+        }
     }
 }

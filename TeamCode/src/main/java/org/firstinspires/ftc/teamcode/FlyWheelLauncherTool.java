@@ -8,7 +8,7 @@ public class FlyWheelLauncherTool {
     private DcMotor motorB;
     private boolean rotating;
 
-    public MovementTool(DcMotor motorA, DcMotor motorB) {
+    public FlyWheelLauncherTool(DcMotor motorA, DcMotor motorB) {
         this.motorA = motorA;
         this.motorB = motorB;
     }
