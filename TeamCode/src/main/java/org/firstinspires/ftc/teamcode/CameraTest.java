@@ -48,7 +48,7 @@ public class CameraTest extends OpMode {
      */
     @Override
     public void loop() {
-        sleep(20);
+        sleep(100);
         visionTool.addText("Runtime", runTime.toString());
         visionTool.addText("Ball Location", "X: " + visionTool.getBallX() + ", Y: " + visionTool.getBallY());
         visionTool.addText("Ball Angle", String.valueOf(visionTool.getBallAngle()));

@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class MovementTool {
-    private DcMotor motorTopLeft;
-    private DcMotor motorTopRight;
-    private DcMotor motorBottomLeft;
-    private DcMotor motorBottomRight;
+    private final DcMotor motorTopLeft;
+    private final DcMotor motorTopRight;
+    private final DcMotor motorBottomLeft;
+    private final DcMotor motorBottomRight;
 
     public MovementTool(DcMotor motorTopLeft, DcMotor motorTopRight, DcMotor motorBottomLeft, DcMotor motorBottomRight) {
         this.motorTopLeft = motorTopLeft;
@@ -54,6 +54,19 @@ public class MovementTool {
         double topRightPower = power * (cos - sin) + turn;
         double bottomLeftPower = power * (cos - sin) - turn;
         double bottomRightPower = power * -(sin + cos) + turn;
+
+        // Normalize big values
+        double max = Math.max(
+                Math.max(Math.abs(topLeftPower), Math.abs(topRightPower)),
+                Math.max(Math.abs(bottomLeftPower), Math.abs(bottomRightPower))
+        );
+
+        if (max > 1.0) {
+            topLeftPower /= max;
+            topRightPower /= max;
+            bottomLeftPower /= max;
+            bottomRightPower /= max;
+        }
 
         motorTopLeft.setPower(topLeftPower);
         motorTopRight.setPower(topRightPower);
