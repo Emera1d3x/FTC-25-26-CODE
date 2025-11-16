@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name = "CameraTest")
 public class CameraTest extends OpMode {
     private VisionTool visionTool;
+    private MovementTool movementTool;
     private final ElapsedTime runTime = new ElapsedTime();
 
     /*
@@ -21,6 +22,10 @@ public class CameraTest extends OpMode {
     public void init() {
         // Initialize VisionTool
         visionTool = new VisionTool(hardwareMap.get(WebcamName.class, "Webcam 1"));
+
+        // ** UNCOMMENT ONE LINE **
+        movementTool = null;
+        //movementTool = new MovementTool(hardwareMap);
 
         visionTool.addText("Hello", "World!");
 
@@ -49,9 +54,18 @@ public class CameraTest extends OpMode {
     @Override
     public void loop() {
         sleep(100);
+
+        int angle = visionTool.getBallAngle();
         visionTool.addText("Runtime", runTime.toString());
         visionTool.addText("Ball Location", "X: " + visionTool.getBallX() + ", Y: " + visionTool.getBallY());
-        visionTool.addText("Ball Angle", String.valueOf(visionTool.getBallAngle()));
+        visionTool.addText("Ball Angle", String.valueOf(angle));
+
+        if (movementTool != null) {
+            // Note: Use angle in `turn` instead of `angle` to "look" in the new direction, instead of
+            //       just moving that way but staring at a single spot
+            // Note2: Divide by 90 to convert from range `-90 to 90` to range `-1.0 to 1.0`
+            movementTool.mecanumDrive(0, 0.5, (double) angle / 90);
+        }
     }
 
     /*
