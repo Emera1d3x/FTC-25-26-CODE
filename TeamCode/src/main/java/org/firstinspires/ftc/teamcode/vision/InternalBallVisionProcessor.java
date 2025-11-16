@@ -4,6 +4,9 @@ import static org.firstinspires.ftc.teamcode.CalibrationTool.CAMERA_HEIGHT;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.CAMERA_WIDTH;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.*;
@@ -43,7 +46,19 @@ public class InternalBallVisionProcessor implements VisionProcessor {
     public void init(int width, int height, CameraCalibration calibration) {}
 
     @Override
-    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasToBmpPx, Object object) {}
+    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasToBmpPx, Object object) {
+        Paint paint = new Paint();
+        paint.setColor(Color.GREEN);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setAntiAlias(true);
+
+        float drawX = result.x * scaleBmpPxToCanvasPx;
+        float drawY = result.y * scaleBmpPxToCanvasPx;
+
+        float radius = 10 * scaleBmpPxToCanvasPx;
+
+        canvas.drawCircle(drawX, drawY, radius, paint);
+    }
 
     @Override
     public Object processFrame(Mat input, long captureTime) {
