@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.vision;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
+import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.*;
@@ -29,7 +29,7 @@ public class InternalDrawingProcessor implements VisionProcessor {
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasToBmpPx, Object object) {
         Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
+        paint.setColor(VISION_MARKING_COLOR);
         paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(15 * scaleBmpPxToCanvasPx);
         paint.setAntiAlias(true);

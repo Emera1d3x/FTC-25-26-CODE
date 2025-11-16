@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.vision;
 
-import static org.firstinspires.ftc.teamcode.CalibrationTool.CAMERA_HEIGHT;
-import static org.firstinspires.ftc.teamcode.CalibrationTool.CAMERA_WIDTH;
+import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -47,39 +45,45 @@ public class InternalBallVisionProcessor implements VisionProcessor {
 
     @Override
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasToBmpPx, Object object) {
+        // Make paint for the circle
         Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
+        paint.setColor(VISION_MARKING_COLOR);
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
 
+        // Calculate circle location and size
         float drawX = result.x * scaleBmpPxToCanvasPx;
         float drawY = result.y * scaleBmpPxToCanvasPx;
+        float radius = 15 * scaleBmpPxToCanvasPx;
 
-        float radius = 10 * scaleBmpPxToCanvasPx;
-
+        // Draw the circle on the ball
         canvas.drawCircle(drawX, drawY, radius, paint);
     }
 
     @Override
     public Object processFrame(Mat input, long captureTime) {
-
+        // Convert the input to HSV for color processing
         Mat hsv = new Mat();
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
 
-        Mat mask_green = new Mat(), mask_purple = new Mat();
-        Core.inRange(hsv, new Scalar(30, 90, 40), new Scalar(90, 255, 255), mask_green);
-        Core.inRange(hsv, new Scalar(125, 90, 40), new Scalar(170, 255, 255), mask_purple);
+        // Filter green and purple blobs
+        Mat maskGreen = new Mat(), maskPurple = new Mat();
+        Core.inRange(hsv, BALL_GREEN_RANGE.first, BALL_GREEN_RANGE.second, maskGreen);
+        Core.inRange(hsv, BALL_PURPLE_RANGE.first, BALL_PURPLE_RANGE.second, maskPurple);
         hsv.release();
 
+        // Combine green and purple masks into a single mask
         Mat mask = new Mat();
-        Core.bitwise_or(mask_green, mask_purple, mask);
+        Core.bitwise_or(maskGreen, maskPurple, mask);
 
-        mask_green.release();
-        mask_purple.release();
+        maskGreen.release();
+        maskPurple.release();
 
-        Imgproc.blur(mask, mask, new Size((double) CAMERA_WIDTH / 50, (double) CAMERA_HEIGHT / 50));
+        // Blur to reduce noise
+        Imgproc.blur(mask, mask, BALL_BLUR_SIZE);
         Core.inRange(mask, new Scalar(100), new Scalar(255), mask);
 
+        // Find the blobs
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
         Imgproc.findContours(mask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -89,7 +93,7 @@ public class InternalBallVisionProcessor implements VisionProcessor {
         boolean found = false;
 
         if (!contours.isEmpty()) {
-            // Find biggest blob
+            // Comparator of blobs
             class ContourComparator implements Comparator<MatOfPoint> {
                 @Override
                 public int compare(MatOfPoint m1, MatOfPoint m2) {
@@ -97,10 +101,13 @@ public class InternalBallVisionProcessor implements VisionProcessor {
                 }
             }
 
-            MatOfPoint largest_contour = Collections.max(contours, new ContourComparator());
+            // Find biggest blob
+            MatOfPoint largestContour = Collections.max(contours, new ContourComparator());
 
-            Moments moments = Imgproc.moments(largest_contour);
-            if (moments.m00 > ((double) (CAMERA_WIDTH * CAMERA_HEIGHT) / 50)) {
+            // Check if size exceeds threshold
+            Moments moments = Imgproc.moments(largestContour);
+            if (moments.m00 > BALL_MIN_SIZE) {
+                // Store coordinates
                 result.x = (int) (moments.m10 / moments.m00);
                 result.y = (int) (moments.m01 / moments.m00);
                 found = true;
@@ -115,6 +122,7 @@ public class InternalBallVisionProcessor implements VisionProcessor {
 
         result.calculateAngle();
 
+        // clean up
         for (MatOfPoint contour : contours) contour.release();
         return null;
     }

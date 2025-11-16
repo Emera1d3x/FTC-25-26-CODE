@@ -33,11 +33,9 @@ public class VisionTool {
 
     public List<AprilTagDetection> getTags() { return tagProcessor.getDetections(); }
     public boolean isTagPresent(int id) {
-        for (AprilTagDetection detection : getTags()) {
+        for (AprilTagDetection detection : getTags())
             if (detection.id == id)
                 return true;
-        }
-
         return false;
     }
 
