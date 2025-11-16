@@ -19,6 +19,10 @@ public class InternalDrawingProcessor implements VisionProcessor {
         onscreenText.put(label, data);
     }
 
+    public void removeText(String label) {
+        onscreenText.remove(label);
+    }
+
     @Override
     public void init(int width, int height, CameraCalibration calibration) {}
 
