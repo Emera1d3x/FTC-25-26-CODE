@@ -20,6 +20,15 @@ public class MovementTool {
 
         motorTR.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorTL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorTR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorTL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorTR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
     public void mecanumDrive(Gamepad gamepad) {
