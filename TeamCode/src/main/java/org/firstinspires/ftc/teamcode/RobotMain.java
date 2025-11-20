@@ -55,19 +55,7 @@ public class RobotMain extends OpMode {
                     .build();
         }
 
-        motorTopRight = hardwareMap.get(DcMotor.class, "motorTopRight");
-        motorTopLeft = hardwareMap.get(DcMotor.class, "motorTopLeft");
-        motorBottomRight = hardwareMap.get(DcMotor.class, "motorBottomRight");
-        motorBottomLeft = hardwareMap.get(DcMotor.class, "motorBottomLeft");
-
-        // motorA = hardwareMap.get(DcMotor.class, "motorA");
-        // motorB = hardwareMap.get(DcMotor.class, "motorB");
-        
-
-        motorTopRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBottomRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        
-        movementTool = (false) ? new MovementTool(hardwareMap) : null;
+        movementTool = (true) ? new MovementTool(hardwareMap) : null;
         
         launcherTool = (false) ? new FlyWheelLauncherTool(hardwareMap) : null;
                         
@@ -108,7 +96,7 @@ public class RobotMain extends OpMode {
 
         telemetry.update();
         if (movementTool != null)
-            movementTool.mecanumDrive(gamepad1);
+            movementTool.mecanumDriveControl(gamepad1);
         if (launcherTool != null) {
             if (gamepad1.a) {
                 launcherTool.rotate();
