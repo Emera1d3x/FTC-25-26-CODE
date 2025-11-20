@@ -90,28 +90,35 @@ public class InternalBallVisionProcessor implements VisionProcessor {
         hierarchy.release();
         mask.release();
 
+        // Sort by descending contour size
+        contours.sort(Comparator.comparingDouble((MatOfPoint c) -> Imgproc.contourArea(c)).reversed());
+
         boolean found = false;
 
-        if (!contours.isEmpty()) {
-            // Comparator of blobs
-            class ContourComparator implements Comparator<MatOfPoint> {
-                @Override
-                public int compare(MatOfPoint m1, MatOfPoint m2) {
-                    return Double.compare(Imgproc.contourArea(m1), Imgproc.contourArea(m2));
-                }
-            }
+        for (MatOfPoint contour : contours) {
+            // Check if size is too small
+            Moments moments = Imgproc.moments(contour);
+            double area = moments.m00;
+            if (area < BALL_MIN_SIZE)
+                continue;
 
-            // Find biggest blob
-            MatOfPoint largestContour = Collections.max(contours, new ContourComparator());
+            // Check if contour is circular enough
+            MatOfPoint2f contour2f = new MatOfPoint2f(); // allocate new matofpoint2f
+            contour.convertTo(contour2f, CvType.CV_32F); // convert
+            double perimeter = Imgproc.arcLength(contour2f, true);
+            contour2f.release(); // deallocate
+            double circularity =
+                    (perimeter * perimeter) > 0 ? // Check for division by zero
+                            (4 * Math.PI * area) / (perimeter * perimeter) // calculate circularity (0.0 to 1.0, 1.0 is perfect circle)
+                            : 0;
+            if (circularity < BALL_MIN_CIRCULARITY) // skip if not circular enough
+                continue;
 
-            // Check if size exceeds threshold
-            Moments moments = Imgproc.moments(largestContour);
-            if (moments.m00 > BALL_MIN_SIZE) {
-                // Store coordinates
-                result.x = (int) (moments.m10 / moments.m00);
-                result.y = (int) (moments.m01 / moments.m00);
-                found = true;
-            }
+            // Found OK ball, store coordinates
+            result.x = (int) (moments.m10 / area);
+            result.y = (int) (moments.m01 / area);
+            found = true;
+            break;
         }
 
         if (!found) {
