@@ -33,16 +33,7 @@ public class MovementTool {
 
     }
 
-    public MovementTool(HardwareMap hardwareMap) {
-        motorTopRight = hardwareMap.get(DcMotor.class, "motorTopRight");
-        motorTopLeft = hardwareMap.get(DcMotor.class, "motorTopLeft");
-        motorBottomRight = hardwareMap.get(DcMotor.class, "motorBottomRight");
-        motorBottomLeft = hardwareMap.get(DcMotor.class, "motorBottomLeft");
-        motorTopRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBottomRight.setDirection(DcMotorSimple.Direction.REVERSE);
-    }
-
-    public void mecanumDrive(Gamepad gamepad) {
+    public void mecanumDriveControl(Gamepad gamepad) {
         double x = gamepad.left_stick_x;
         double y = -gamepad.left_stick_y;
         double turn = gamepad.right_stick_x;
@@ -50,7 +41,7 @@ public class MovementTool {
         double theta = Math.atan2(y, x);
         double power = Math.sqrt(x * x + y * y);
 
-        mecanumDrive(Math.toDegrees(theta), power, turn);
+        mecanumDriveMove(Math.toDegrees(theta), power, turn);
     }
 
     /**
@@ -59,7 +50,7 @@ public class MovementTool {
      * @param power The drive power. From 0.0 to 1.0
      * @param turn The amount of spin, from -1.0 (CCW full speed) to 1.0 (CW full speed)
      */
-    public void mecanumDrive(double angle, double power, double turn) {
+    public void mecanumDriveMove(double angle, double power, double turn) {
         double theta = Math.toRadians(angle);
 
         double sin = Math.sin(theta);
