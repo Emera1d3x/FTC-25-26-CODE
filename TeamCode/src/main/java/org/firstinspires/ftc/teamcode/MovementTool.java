@@ -2,20 +2,35 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class MovementTool {
-    private final DcMotor motorTopLeft;
-    private final DcMotor motorTopRight;
-    private final DcMotor motorBottomLeft;
-    private final DcMotor motorBottomRight;
+    private DcMotor motorTL, motorTR, motorBL, motorBR;
 
-    public MovementTool(DcMotor motorTopLeft, DcMotor motorTopRight, DcMotor motorBottomLeft, DcMotor motorBottomRight) {
-        this.motorTopLeft = motorTopLeft;
-        this.motorTopRight = motorTopRight;
-        this.motorBottomLeft = motorBottomLeft;
-        this.motorBottomRight = motorBottomRight;
+    public MovementTool(HardwareMap hardwareMap) {
+        initializeMotors(hardwareMap);
+    }
+
+    private void initializeMotors(HardwareMap hardwareMap) {
+        motorTL = hardwareMap.get(DcMotor.class, "motorTL"); // 1
+        motorTR = hardwareMap.get(DcMotor.class, "motorTR"); // 3
+        motorBL = hardwareMap.get(DcMotor.class, "motorBL"); // 0
+        motorBR = hardwareMap.get(DcMotor.class, "motorBR"); // 2
+
+        motorTR.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorTL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorTR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorTL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorTR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
     public MovementTool(HardwareMap hardwareMap) {
@@ -55,27 +70,9 @@ public class MovementTool {
         double bottomLeftPower = power * (cos - sin) - turn;
         double bottomRightPower = power * -(sin + cos) + turn;
 
-        // Normalize big values
-        double max = Math.max(
-                Math.max(Math.abs(topLeftPower), Math.abs(topRightPower)),
-                Math.max(Math.abs(bottomLeftPower), Math.abs(bottomRightPower))
-        );
-
-        if (max > 1.0) {
-            topLeftPower /= max;
-            topRightPower /= max;
-            bottomLeftPower /= max;
-            bottomRightPower /= max;
-        }
-
-        motorTopLeft.setPower(topLeftPower);
-        motorTopRight.setPower(topRightPower);
-        motorBottomLeft.setPower(bottomLeftPower);
-        motorBottomRight.setPower(bottomRightPower);
+        motorTL.setPower(topLeftPower);
+        motorTR.setPower(topRightPower);
+        motorBL.setPower(bottomLeftPower);
+        motorBR.setPower(bottomRightPower);
     }
-
-    public void driveMotorTopLeft(double power) { motorTopLeft.setPower(power); }
-    public void driveMotorTopRight(double power) { motorTopRight.setPower(power); }
-    public void driveMotorBottomLeft(double power) { motorBottomLeft.setPower(power); }
-    public void driveMotorBottomRight(double power) { motorBottomRight.setPower(power); }
 }

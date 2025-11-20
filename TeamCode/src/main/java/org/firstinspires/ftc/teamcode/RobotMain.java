@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -12,12 +12,9 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
-
 import java.util.Locale;
 
-
 import android.util.Size;
-
 
 @TeleOp(name = "RobotMain")
 public class RobotMain extends OpMode {
@@ -33,31 +30,24 @@ public class RobotMain extends OpMode {
 
     VisionPortal portal;
 
-    DcMotor motorTopLeft;
-    DcMotor motorTopRight;
-    DcMotor motorBottomLeft;
-    DcMotor motorBottomRight;
-
     private MovementTool movementTool;
-    private  FlyWheelLauncherTool launcherTool;
+    private FlyWheelLauncherTool launcherTool;
 
     AprilTagProcessor tagProcessor;
 
     @Override
     public void init() {
 
+        HardwareMap hardwareMap = this.hardwareMap;
         tagProcessor = new AprilTagProcessor.Builder().build();
 
-        if (USING_WEBCAM)
-        {
+        if (USING_WEBCAM) {
             portal = new VisionPortal.Builder()
                     .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                     .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
                     .addProcessor(tagProcessor)
                     .build();
-        }
-        else
-        {
+        } else {
             portal = new VisionPortal.Builder()
                     .setCamera(INTERNAL_CAM_DIR)
                     .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
@@ -87,7 +77,6 @@ public class RobotMain extends OpMode {
         telemetry.addData("Controller One", gamepad1.toString());
         telemetry.update();
 
-       
     }
 
     @Override
@@ -97,8 +86,7 @@ public class RobotMain extends OpMode {
         telemetry.addData("Controller One", gamepad1.toString());
         boolean x = gamepad1.x;
 
-        if (x && !lastX)
-        {
+        if (x && !lastX) {
             portal.saveNextFrameRaw(String.format(Locale.US, "CameraFrameCapture-%06d", frameCount++));
             capReqTime = System.currentTimeMillis();
         }
@@ -110,25 +98,21 @@ public class RobotMain extends OpMode {
         telemetry.addLine(" > Press X (or Square) to capture a frame");
         telemetry.addData(" > Camera Status", portal.getCameraState());
 
-        if (capReqTime != 0)
-        {
+        if (capReqTime != 0) {
             telemetry.addLine("\nCaptured Frame!");
         }
 
-        if (capReqTime != 0 && System.currentTimeMillis() - capReqTime > 1000)
-        {
+        if (capReqTime != 0 && System.currentTimeMillis() - capReqTime > 1000) {
             capReqTime = 0;
         }
 
         telemetry.update();
-        if (movementTool!=null) movementTool.mecanumDrive(gamepad1);
-        if (launcherTool!=null) {
-            if (gamepad1.a) {launcherTool.rotate();}
-        }
-        if (gamepad1.a) {
-            motorTopRight.setPower(1);
-        } else {
-            motorTopRight.setPower(0);
+        if (movementTool != null)
+            movementTool.mecanumDrive(gamepad1);
+        if (launcherTool != null) {
+            if (gamepad1.a) {
+                launcherTool.rotate();
+            }
         }
     }
 }
