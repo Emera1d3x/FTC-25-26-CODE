@@ -77,9 +77,9 @@ public class RobotMain extends OpMode {
         motorTopRight.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBottomRight.setDirection(DcMotorSimple.Direction.REVERSE);
         
-        movementTool = (false) ? new MovementTool(motorTopLeft, motorTopRight, motorBottomLeft, motorBottomRight) : null;
+        movementTool = (false) ? new MovementTool(hardwareMap) : null;
         
-        launcherTool = (false) ? new FlyWheelLauncherTool(motorTopRight, motorTopRight) : null;
+        launcherTool = (false) ? new FlyWheelLauncherTool(hardwareMap) : null;
                         
 
         telemetry.addData("Launch Test:", "Successful");
