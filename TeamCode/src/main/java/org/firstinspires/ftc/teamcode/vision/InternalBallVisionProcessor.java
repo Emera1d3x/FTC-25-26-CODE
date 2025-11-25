@@ -18,22 +18,10 @@ import java.util.List;
 public class InternalBallVisionProcessor implements VisionProcessor {
 
     public static class Result {
-        private int x = CAMERA_WIDTH, y = CAMERA_HEIGHT, angle = 90;
+        private int x = CAMERA_WIDTH, y = CAMERA_HEIGHT;
 
         int getX() { return x; }
         int getY() { return y; }
-        int getAngle() { return angle; }
-
-        // Calculates angle from set x and y values
-        private void calculateAngle() {
-            // Calculate dx and dy from bottom-center
-            int dx = x - CAMERA_WIDTH / 2;
-            int dy = y - CAMERA_HEIGHT;
-
-            double theta = Math.atan2(dy, dx);
-
-            angle = (int) Math.toDegrees(theta) + 90;
-        }
     }
 
     private final Result result = new Result();
@@ -126,8 +114,6 @@ public class InternalBallVisionProcessor implements VisionProcessor {
             result.x = CAMERA_WIDTH;
             result.y = CAMERA_HEIGHT;
         }
-
-        result.calculateAngle();
 
         // clean up
         for (MatOfPoint contour : contours) contour.release();

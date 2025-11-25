@@ -26,7 +26,6 @@ public class VisionTool {
 
     public int getBallX() { return ballProcessor.getResult().getX(); }
     public int getBallY() { return ballProcessor.getResult().getY(); }
-    public int getBallAngle() { return ballProcessor.getResult().getAngle(); }
 
     public void addText(String label, String data) { drawingProcessor.addText(label, data); }
     public void removeText(String label) { drawingProcessor.removeText(label); }
@@ -37,6 +36,12 @@ public class VisionTool {
             if (detection.id == id)
                 return true;
         return false;
+    }
+    public Point getTagCenter(int id) {
+        for (AprilTagDetection detection : getTags())
+            if (detection.id == id)
+                return new Point(detection.center.x, detection.center.y);
+        return new Point(CAMERA_WIDTH, CAMERA_HEIGHT);
     }
 
     public void shutdown() { portal.stopStreaming(); }
