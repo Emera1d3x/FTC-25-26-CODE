@@ -99,6 +99,8 @@ public class MovementTool {
         int dY = (int) Math.copySign(Math.max(Math.abs(currY - targetY) - toleranceY, 0), currY - targetY);
 
         double theta = Math.atan2(dY, dX);
+
+        // Angle is a value representing the desired turn, disregarding forward/backward
         int angle = (int) Math.toDegrees(theta); // (-)180 left, -90 up, 0 right, 90 down
         angle = Math.abs(angle); // 180 left, 90 up/down, 0 right
         angle = 180 - angle; // 0 left, 90 up/down, 180 right
@@ -109,7 +111,7 @@ public class MovementTool {
         power = power - Math.abs(angle) / divisor;
 
         // Drive slower when closer
-        power *= Math.min(Math.hypot(dX, dY) / 300, 1.0);
+        power *= Math.min(Math.hypot(dX, dY) / 100, 1.0);
 
         // Calculate forward/backward, accounting for camera POV
         power *= (location == TargetLocation.FLOOR ? 1 : -1) * Integer.signum(-dY);

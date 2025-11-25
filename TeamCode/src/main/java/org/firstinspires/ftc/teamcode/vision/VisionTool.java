@@ -30,6 +30,16 @@ public class VisionTool {
     public void addText(String label, String data) { drawingProcessor.addText(label, data); }
     public void removeText(String label) { drawingProcessor.removeText(label); }
 
+    public void switchToBalls() {
+        portal.setProcessorEnabled(ballProcessor, true);
+        portal.setProcessorEnabled(tagProcessor, false);
+    }
+
+    public void switchToTags() {
+        portal.setProcessorEnabled(ballProcessor, false);
+        portal.setProcessorEnabled(tagProcessor, true);
+    }
+
     public List<AprilTagDetection> getTags() { return tagProcessor.getDetections(); }
     public boolean isTagPresent(int id) {
         for (AprilTagDetection detection : getTags())
