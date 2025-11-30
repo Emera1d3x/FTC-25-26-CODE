@@ -56,8 +56,18 @@ public class RobotMain extends OpMode {
         }
 
         movementTool = (true) ? new MovementTool(hardwareMap) : null;
-        
-        launcherTool = (false) ? new FlyWheelLauncherTool(hardwareMap) : null;
+        int launcherType = 0;
+        switch (launcherType) {
+            case 1: // Team 1
+                launcherTool = new FlyWheelLauncherTool(hardwareMap);
+                break;
+            case 2:
+                launcherTool = null;
+                break;
+                break;
+            default:
+                launcherTool = null;
+        }
                         
 
         telemetry.addData("Launch Test:", "Successful");
@@ -98,9 +108,7 @@ public class RobotMain extends OpMode {
         if (movementTool != null)
             movementTool.mecanumDriveControl(gamepad1);
         if (launcherTool != null) {
-            if (gamepad1.a) {
-                launcherTool.rotate();
-            }
+            launcherTool.launcherControl(gamepad1);
         }
     }
 }
