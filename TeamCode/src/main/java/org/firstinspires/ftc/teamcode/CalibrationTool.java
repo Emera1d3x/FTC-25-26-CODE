@@ -19,5 +19,7 @@ public final class CalibrationTool {
     public static final Pair<Scalar, Scalar> BALL_PURPLE_RANGE = new Pair<>(new Scalar(125, 50, 40), new Scalar(170, 255, 255));
     public static final Size BALL_BLUR_SIZE = new Size((double) CAMERA_WIDTH / 100, (double) CAMERA_HEIGHT / 100);
     public static final double BALL_MIN_SIZE = (double)(CAMERA_WIDTH * CAMERA_HEIGHT) / 150;
-    public static final double BALL_MIN_CIRCULARITY = 0.8; // 0.0 to 1.0
+
+//    public static final double BALL_MIN_CIRCULARITY = 0.8; // 0.0 to 1.0
+    public static final double BALL_MIN_CIRCULARITY = 0.0;
 }

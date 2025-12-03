@@ -16,8 +16,8 @@ public class MovementTool {
 
         assert motorTL != null && motorTR != null && motorBL != null && motorBR != null;
 
-        motorTR.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBR.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorTL.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         motorTL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorTR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -35,7 +35,8 @@ public class MovementTool {
         double y = -gamepad.left_stick_y;
         double turn = gamepad.right_stick_x;
 
-        double theta = Math.atan2(y, x);
+        // Note flipped x and y
+        double theta = Math.atan2(x, y);
         double power = Math.sqrt(x * x + y * y);
 
         mecanumDriveMove(Math.toDegrees(theta), power, turn);
@@ -44,19 +45,19 @@ public class MovementTool {
     /**
      * Drive in a given direction and spin with a given speed
      * @param angle The angle to drive, in degrees. 0 is up, 90 is right
-     * @param power The drive power. From 0.0 to 1.0
+     * @param power The drive power. From 0.0 to 1.0. This controls both rotational and translational power
      * @param turn The amount of spin, from -1.0 (CCW full speed) to 1.0 (CW full speed)
      */
     public void mecanumDriveMove(double angle, double power, double turn) {
         double theta = Math.toRadians(angle);
 
-        double sin = Math.sin(theta);
-        double cos = Math.cos(theta);
+        double strafe = Math.sin(theta);
+        double drive = Math.cos(theta);
 
-        double topLeftPower = power * -(sin + cos) - turn;
-        double topRightPower = power * (cos - sin) + turn;
-        double bottomLeftPower = power * (cos - sin) - turn;
-        double bottomRightPower = power * -(sin + cos) + turn;
+        double topLeftPower = power * (drive + strafe + turn);
+        double topRightPower = power * (drive - strafe - turn);
+        double bottomLeftPower = power * (drive - strafe + turn);
+        double bottomRightPower = power * (drive + strafe - turn);
 
         // Normalize big values
         // If any is greater than 1.0 or less than -1.0, preserve direction

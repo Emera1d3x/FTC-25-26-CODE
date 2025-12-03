@@ -10,13 +10,11 @@ import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name = "CameraTest")
 public class CameraTest extends OpMode {
     private VisionTool visionTool;
     private MovementTool movementTool;
-    private final ElapsedTime runTime = new ElapsedTime();
     private boolean isCollectingBalls = true;
 
     /*
@@ -39,27 +37,6 @@ public class CameraTest extends OpMode {
      */
     @Override
     public void init_loop() {
-        sleep(20);
-    }
-
-    /*
-     * Code to run ONCE when the driver hits START
-     */
-    @Override
-    public void start() {
-        runTime.reset();
-    }
-
-    /*
-     * Code to run REPEATEDLY after the driver hits START but before they hit STOP
-     */
-    @Override
-    public void loop() {
-        sleep(100);
-
-        visionTool.addText("Runtime", runTime.toString());
-        visionTool.addText("Ball Location", "X: " + visionTool.getBallX() + ", Y: " + visionTool.getBallY());
-
         if (gamepad1.a) {
             // stop, toggle, then wait 1 second
             movementTool.mecanumDriveMove(0, 0, 0);
@@ -89,6 +66,20 @@ public class CameraTest extends OpMode {
                     0.5, // Max Power
                     MovementTool.TargetLocation.WALL); // Location
         }
+    }
+
+    /*
+     * Code to run ONCE when the driver hits START
+     */
+    @Override
+    public void start() {
+    }
+
+    /*
+     * Code to run REPEATEDLY after the driver hits START but before they hit STOP
+     */
+    @Override
+    public void loop() {
     }
 
     /*
