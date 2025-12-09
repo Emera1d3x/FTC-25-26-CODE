@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class FlyWheelLauncherTool {
     private int type = 0;
@@ -12,8 +13,10 @@ public class FlyWheelLauncherTool {
     private DcMotor motorFly;
     private CRServo S1, S2;
     private Servo S3;
-
-    private boolean rotating;
+    private boolean servoActive = false;
+    private boolean lastB = false;
+    private final double SERVO_DOWN = 0.0;
+    private final double SERVO_UP = 0.5; // 90 degrees??
     
 
     public FlyWheelLauncherTool(HardwareMap hardwareMap, int type) {
@@ -28,10 +31,11 @@ public class FlyWheelLauncherTool {
     }
 
     private void initializeTool1(HardwareMap hardwareMap) {
-        motorFly = hardwareMap.get(DcMotor.class, "motorFly"); // Shooter // 
-        S1 = hardwareMap.get(CRServo.class, "S1"); // 1
-        S2 = hardwareMap.get(CRServo.class, "S2"); // 2
-        S3 = hardwareMap.get(Servo.class, "S3"); // 3
+        motorFly = hardwareMap.get(DcMotor.class, "motorFly"); // Shooter Pin: 1 (Expansion Hub)
+        S1 = hardwareMap.get(CRServo.class, "S1"); // Pin: 1
+        S2 = hardwareMap.get(CRServo.class, "S2"); // Pin: 2
+        S3 = hardwareMap.get(Servo.class, "S3"); // Pin: 3
+        S3.setPosition(SERVO_DOWN);
     }
 
     public void launcherControl(Gamepad gamepad) {
@@ -39,22 +43,23 @@ public class FlyWheelLauncherTool {
 
         } else if (type == 1){
             if (gamepad.a){
-                S1.setPower(1);
-                S2.setPower(1);
-            } else {
-                S1.setPower(0);
-                S2.setPower(0);
+                S1.setPower(0.5);
+                S2.setPower(0.5);
+            } else { S1.setPower(0); S2.setPower(0);}
+            boolean bPressed = gamepad.b && !lastB;
+            lastB = gamepad.b;
+            if (bPressed && !servoActive) {
+                S3.setPosition(SERVO_UP);
+                servoTimer.reset();
+                servoActive = true;
             }
-            if (gamepad.b){
-                S3.setPower(1);
-            } else {
-                S3.setPower(0);
+            if (servoActive && servoTimer.seconds() >= 1.0) {
+                S3.setPosition(SERVO_DOWN);
+                servoActive = false;
             }
             if (gamepad.right_trigger){
-                motorFly.setPower(1);
-            } else {
-                motorFly.setPower(0);
-            }
+                motorFly.setPower(0.5);
+            } else { motorFly.setPower(0);}
         } else if (type == 2){
 
         }

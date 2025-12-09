@@ -9,10 +9,10 @@ public class MovementTool {
     private DcMotor motorTL, motorTR, motorBL, motorBR;
 
     public MovementTool(HardwareMap hardwareMap) {
-        motorTL = hardwareMap.get(DcMotor.class, "motorTL"); // 1
-        motorTR = hardwareMap.get(DcMotor.class, "motorTR"); // 3
-        motorBL = hardwareMap.get(DcMotor.class, "motorBL"); // 0
-        motorBR = hardwareMap.get(DcMotor.class, "motorBR"); // 2
+        motorTL = hardwareMap.get(DcMotor.class, "motorTL"); // Pin: 1
+        motorTR = hardwareMap.get(DcMotor.class, "motorTR"); // Pin: 3
+        motorBL = hardwareMap.get(DcMotor.class, "motorBL"); // Pin: 0
+        motorBR = hardwareMap.get(DcMotor.class, "motorBR"); // Pin: 2
 
         assert motorTL != null && motorTR != null && motorBL != null && motorBR != null;
 
@@ -35,9 +35,8 @@ public class MovementTool {
         double y = -gamepad.left_stick_y;
         double turn = gamepad.right_stick_x;
 
-        // Note flipped x and y
         double theta = Math.atan2(x, y);
-        double power = Math.sqrt(x * x + y * y);
+        double power = Math.sqrt(x*x + y*y);
 
         mecanumDriveMove(Math.toDegrees(theta), power, turn);
     }

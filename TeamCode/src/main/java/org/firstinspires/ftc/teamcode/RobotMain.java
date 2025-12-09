@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
-
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.Locale;
@@ -55,26 +54,24 @@ public class RobotMain extends OpMode {
                     .build();
         }
 
-        movementTool = (true) ? new MovementTool(hardwareMap) : null;
-        int launcherType = 0;
+        movementTool = (true) ? new MovementTool(hardwareMap) : null; // Edit boolean to switch on/off movementTool
+        int launcherType = 0; // Edit number to change launcher type
         switch (launcherType) {
             case 1: // Team 1
                 launcherTool = new FlyWheelLauncherTool(hardwareMap);
                 break;
-            case 2:
+            case 2: // Team 2
                 launcherTool = null;
                 break;
                 break;
-            default:
+            default: // Unavailable
                 launcherTool = null;
-        }
-                        
+        }     
 
         telemetry.addData("Launch Test:", "Successful");
         telemetry.addData("System Version", "1.0");
         telemetry.addData("Controller One", gamepad1.toString());
         telemetry.update();
-
     }
 
     @Override
@@ -110,5 +107,6 @@ public class RobotMain extends OpMode {
         if (launcherTool != null) {
             launcherTool.launcherControl(gamepad1);
         }
+        telemetry.update();
     }
 }
