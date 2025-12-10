@@ -39,7 +39,7 @@ public class CameraTest extends OpMode {
     public void init_loop() {
         if (gamepad1.a) {
             // stop, toggle, then wait 1 second
-            movementTool.mecanumDriveMove(0, 0, 0);
+            movementTool.brake();
             isCollectingBalls = !isCollectingBalls;
             if (isCollectingBalls) {
                 visionTool.switchToBalls();
