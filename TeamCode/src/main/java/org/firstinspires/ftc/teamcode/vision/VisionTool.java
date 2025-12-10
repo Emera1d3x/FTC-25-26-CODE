@@ -70,6 +70,13 @@ public class VisionTool {
         return new Point(CAMERA_WIDTH, CAMERA_HEIGHT);
     }
 
+    public AprilTagDetection getTag(int id) {
+        for (AprilTagDetection detection : getTags())
+            if (detection.id == id)
+                return detection;
+        return null;
+    }
+
     public void shutdown() { portal.stopStreaming(); }
 
     private final VisionPortal portal;
