@@ -22,4 +22,6 @@ public final class CalibrationTool {
 
 //    public static final double BALL_MIN_CIRCULARITY = 0.8; // 0.0 to 1.0
     public static final double BALL_MIN_CIRCULARITY = 0.0;
+    public static final int CAMERA_EXPOSURE = 6; // ms
+    public static final int CAMERA_GAIN = 250;
 }

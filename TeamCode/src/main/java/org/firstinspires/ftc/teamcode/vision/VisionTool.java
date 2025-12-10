@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.vision;
 
+import static android.os.SystemClock.sleep;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -10,6 +13,7 @@ import org.opencv.core.*;
 import org.opencv.imgproc.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class VisionTool {
     public VisionTool(WebcamName webcam) {
@@ -22,6 +26,18 @@ public class VisionTool {
                 .addProcessors(ballProcessor, tagProcessor, drawingProcessor)
                 .enableLiveView(CAMERA_LIVE_VIEW)
                 .build();
+
+        ExposureControl exposure = portal.getCameraControl(ExposureControl.class);
+        if (exposure.getMode() != ExposureControl.Mode.Manual)
+        {
+            exposure.setMode(ExposureControl.Mode.Manual);
+            sleep(50);
+        }
+        exposure.setExposure((long)CAMERA_EXPOSURE, TimeUnit.MILLISECONDS);
+        sleep(20);
+        GainControl gain = portal.getCameraControl(GainControl.class);
+        gain.setGain(CAMERA_GAIN);
+        sleep(20);
     }
 
     public int getBallX() { return ballProcessor.getResult().getX(); }
