@@ -53,6 +53,10 @@ public class MovementTool {
         double strafe = Math.sin(theta);
         double drive = Math.cos(theta);
 
+        mecanumDriveMove(drive, turn, strafe, power);
+    }
+
+    public void mecanumDriveMove(double drive, double turn, double strafe, double power) {
         double topLeftPower = power * (drive + strafe + turn);
         double topRightPower = power * (drive - strafe - turn);
         double bottomLeftPower = power * (drive - strafe + turn);
@@ -76,6 +80,13 @@ public class MovementTool {
         motorTR.setPower(topRightPower);
         motorBL.setPower(bottomLeftPower);
         motorBR.setPower(bottomRightPower);
+    }
+
+    public void brake() {
+        motorTL.setPower(0);
+        motorTR.setPower(0);
+        motorBL.setPower(0);
+        motorBR.setPower(0);
     }
 
     public enum TargetLocation {
