@@ -107,7 +107,7 @@ public class MovementTool {
         angle = angle - 90; // -90 left, 0 up/down, 90 right
 
         // Drive slower when turning more sharply
-        double divisor = 90 / (power + 0.001); // prevent /0
+        double divisor = 180 / (power + 0.001); // prevent /0
         power = power - Math.abs(angle) / divisor;
 
         // Drive slower when closer
