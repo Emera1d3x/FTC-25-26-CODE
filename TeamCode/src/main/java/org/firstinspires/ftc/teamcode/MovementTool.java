@@ -1,12 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 
+import static android.os.SystemClock.sleep;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
 public class MovementTool {
     private DcMotor motorTL, motorTR, motorBL, motorBR;
+
+    private void setMotorMode(DcMotor.RunMode mode) {
+        motorTL.setMode(mode);
+        motorTR.setMode(mode);
+        motorBL.setMode(mode);
+        motorBR.setMode(mode);
+    }
 
     public MovementTool(HardwareMap hardwareMap) {
         motorTL = hardwareMap.get(DcMotor.class, "motorTL"); // Pin: 1
@@ -19,15 +29,17 @@ public class MovementTool {
         motorTL.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        if (USE_DRIVE_ENCODERS) {
+            setMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        } else {
+            setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+
         motorTL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorTR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        motorTL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorTR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void mecanumDriveControl(Gamepad gamepad) {
@@ -87,6 +99,32 @@ public class MovementTool {
         motorTR.setPower(0);
         motorBL.setPower(0);
         motorBR.setPower(0);
+    }
+
+    public void relativeMove(double power, double leftInches, double rightInches) {
+        int encoderTargetTL = motorTL.getCurrentPosition() + (int)(leftInches * DRIVE_ENCODER_CPI);
+        int encoderTargetBL = motorBL.getCurrentPosition() + (int)(leftInches * DRIVE_ENCODER_CPI);
+        int encoderTargetTR = motorTR.getCurrentPosition() + (int)(rightInches * DRIVE_ENCODER_CPI);
+        int encoderTargetBR = motorBR.getCurrentPosition() + (int)(rightInches * DRIVE_ENCODER_CPI);
+
+        motorTL.setTargetPosition(encoderTargetTL);
+        motorTR.setTargetPosition(encoderTargetTR);
+        motorBL.setTargetPosition(encoderTargetBL);
+        motorBR.setTargetPosition(encoderTargetBR);
+
+        setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorTL.setPower(power);
+        motorTR.setPower(power);
+        motorBL.setPower(power);
+        motorBR.setPower(power);
+
+        while (motorTL.isBusy() || motorTR.isBusy() || motorBL.isBusy() || motorBR.isBusy())
+            sleep(1);
+
+        brake();
+
+        setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public enum TargetLocation {
