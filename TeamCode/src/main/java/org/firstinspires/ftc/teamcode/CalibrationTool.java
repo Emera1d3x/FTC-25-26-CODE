@@ -24,4 +24,7 @@ public final class CalibrationTool {
     public static final double BALL_MIN_CIRCULARITY = 0.0;
     public static final int CAMERA_EXPOSURE = 6; // ms
     public static final int CAMERA_GAIN = 250;
+    public static final boolean USE_DRIVE_ENCODERS = true;
+    public static final double DRIVE_ENCODER_CPI = // Counts Per Inch
+            (50.9 * 7) / (4.0 * 3.14159); // Counts per revolution / Wheel Circumference
 }
