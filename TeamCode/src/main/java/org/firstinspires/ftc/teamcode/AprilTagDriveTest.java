@@ -14,7 +14,7 @@ public class AprilTagDriveTest extends LinearOpMode {
     VisionTool vision;
     MovementTool movement;
 
-    static final int DESIRED_DISTANCE = 12; // inch
+    static final int DESIRED_DISTANCE = 30; // inch
     @Override
     public void runOpMode()
     {
@@ -27,14 +27,14 @@ public class AprilTagDriveTest extends LinearOpMode {
             if (tag != null)
             {
                 double  drive      = (tag.ftcPose.range - DESIRED_DISTANCE);
-                double  turn    = tag.ftcPose.bearing;
+                double  turn    = -tag.ftcPose.bearing;
                 double  strafe        = tag.ftcPose.yaw;
 
                 movement.mecanumDriveMove(drive, turn, strafe, 0.1);
             }
             else
             {
-                movement.brake();
+                movement.mecanumDriveMove(0, 0.3, 1);
             }
         }
 
