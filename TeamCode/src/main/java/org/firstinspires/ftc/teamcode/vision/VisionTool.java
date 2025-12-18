@@ -27,6 +27,13 @@ public class VisionTool {
                 .enableLiveView(CAMERA_LIVE_VIEW)
                 .build();
 
+        // Wait for camera to start streaming
+        while (portal.getCameraState() != VisionPortal.CameraState.STREAMING)
+            sleep(1);
+
+        tagProcessor.setDecimation(1.0f);
+
+        // Set exposure and gain
         ExposureControl exposure = portal.getCameraControl(ExposureControl.class);
         if (exposure.getMode() != ExposureControl.Mode.Manual)
         {
