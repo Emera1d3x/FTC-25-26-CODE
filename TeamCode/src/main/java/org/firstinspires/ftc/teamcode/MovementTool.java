@@ -164,6 +164,11 @@ public class MovementTool {
         } // USE_DRIVE_ENCODERS
     }
 
+    public int getPositionTL() { return motorTL.getCurrentPosition(); }
+    public int getPositionTR() { return motorTR.getCurrentPosition(); }
+    public int getPositionBL() { return motorBL.getCurrentPosition(); }
+    public int getPositionBR() { return motorBR.getCurrentPosition(); }
+
     /**
      * Move to a certain position relative to an object
      * @param currX The current x coordinate of the object
