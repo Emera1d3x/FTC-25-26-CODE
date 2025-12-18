@@ -8,7 +8,6 @@ import org.opencv.core.Size;
 
 public final class CalibrationTool {
     public static final double WHEEL_DIAMETER = 4.0;
-    public static final double TICKS_PER_REV = 560.0;
     public static final int CAMERA_WIDTH = 640;
     public static final int CAMERA_HEIGHT = 480;
     public static final boolean CAMERA_LIVE_VIEW = true;
@@ -25,6 +24,8 @@ public final class CalibrationTool {
     public static final int CAMERA_EXPOSURE = 6; // ms
     public static final int CAMERA_GAIN = 250;
     public static final boolean USE_DRIVE_ENCODERS = true;
+    public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * 3.14159;
+    public static final double MOTOR_RPM = 130;
     public static final double DRIVE_ENCODER_CPI = // Counts Per Inch
-            (50.9 * 7) / (4.0 * 3.14159); // Counts per revolution / Wheel Circumference
+            (50.9 * 7) / WHEEL_CIRCUMFERENCE; // Counts per revolution / Wheel Circumference
 }

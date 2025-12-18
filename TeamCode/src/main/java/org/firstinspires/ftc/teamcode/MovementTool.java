@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
 public class MovementTool {
@@ -90,38 +92,69 @@ public class MovementTool {
         motorBR.setPower(bottomRightPower);
     }
 
+    // NOTE: `power` is IGNORED when `USE_DRIVE_ENCODERS == false`
     public void relativeMove(double power, double leftInches, double rightInches) {
-        int encoderTargetTL = motorTL.getCurrentPosition() + (int)(leftInches * DRIVE_ENCODER_CPI);
-        int encoderTargetBL = motorBL.getCurrentPosition() + (int)(leftInches * DRIVE_ENCODER_CPI);
-        int encoderTargetTR = motorTR.getCurrentPosition() + (int)(rightInches * DRIVE_ENCODER_CPI);
-        int encoderTargetBR = motorBR.getCurrentPosition() + (int)(rightInches * DRIVE_ENCODER_CPI);
+        if (USE_DRIVE_ENCODERS) {
+            int encoderTargetTL = motorTL.getCurrentPosition() + (int) (leftInches * DRIVE_ENCODER_CPI);
+            int encoderTargetBL = motorBL.getCurrentPosition() + (int) (leftInches * DRIVE_ENCODER_CPI);
+            int encoderTargetTR = motorTR.getCurrentPosition() + (int) (rightInches * DRIVE_ENCODER_CPI);
+            int encoderTargetBR = motorBR.getCurrentPosition() + (int) (rightInches * DRIVE_ENCODER_CPI);
 
-        motorTL.setTargetPosition(encoderTargetTL);
-        motorTR.setTargetPosition(encoderTargetTR);
-        motorBL.setTargetPosition(encoderTargetBL);
-        motorBR.setTargetPosition(encoderTargetBR);
+            motorTL.setTargetPosition(encoderTargetTL);
+            motorTR.setTargetPosition(encoderTargetTR);
+            motorBL.setTargetPosition(encoderTargetBL);
+            motorBR.setTargetPosition(encoderTargetBR);
 
-        setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
+            setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        motorTL.setPower(power);
-        motorTR.setPower(power);
-        motorBL.setPower(power);
-        motorBR.setPower(power);
+            motorTL.setPower(power);
+            motorTR.setPower(power);
+            motorBL.setPower(power);
+            motorBR.setPower(power);
 
-        while (motorTL.isBusy() || motorTR.isBusy() || motorBL.isBusy() || motorBR.isBusy())
-            sleep(1);
+            while (motorTL.isBusy() || motorTR.isBusy() || motorBL.isBusy() || motorBR.isBusy())
+                sleep(1);
 
-        motorTL.setPower(0);
-        motorTR.setPower(0);
-        motorBL.setPower(0);
-        motorBR.setPower(0);
+            motorTL.setPower(0);
+            motorTR.setPower(0);
+            motorBL.setPower(0);
+            motorBR.setPower(0);
 
-        setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
+            setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        } else { // USE_DRIVE_ENCODERS
 
-    public enum TargetLocation {
-        FLOOR,
-        WALL,
+            // inches / inch per millisecond
+            double leftDriveTime = Math.abs(leftInches) / (MOTOR_RPM / 60000 * WHEEL_CIRCUMFERENCE);
+            double rightDriveTime = Math.abs(rightInches) / (MOTOR_RPM / 60000 * WHEEL_CIRCUMFERENCE);
+
+            ElapsedTime elapsed = new ElapsedTime();
+            elapsed.reset();
+
+            boolean leftDone = false, rightDone = false;
+
+            motorTL.setPower(Math.signum(leftInches));
+            motorTR.setPower(Math.signum(rightInches));
+            motorBL.setPower(Math.signum(leftInches));
+            motorBR.setPower(Math.signum(rightInches));
+
+            while (!leftDone || !rightDone) {
+                double ms = elapsed.milliseconds();
+
+                if (ms >= leftDriveTime) {
+                    motorTL.setPower(0);
+                    motorBL.setPower(0);
+                    leftDone = true;
+                }
+
+                if (ms >= rightDriveTime) {
+                    motorTR.setPower(0);
+                    motorBR.setPower(0);
+                    rightDone = true;
+                }
+
+                Thread.yield();
+            }
+        } // USE_DRIVE_ENCODERS
     }
 
     /**
@@ -133,9 +166,8 @@ public class MovementTool {
      * @param toleranceX The maximum allowed x deviation
      * @param toleranceY Same thing for Y
      * @param power The driving power, from 0.0 to 1.0
-     * @param location The location, needed to calculate forward/backward
      */
-    void driveToTarget(int currX, int currY, int targetX, int targetY, int toleranceX, int toleranceY, double power, TargetLocation location) {
+    void driveToTarget(int currX, int currY, int targetX, int targetY, int toleranceX, int toleranceY, double power) {
         int dX = (int) Math.copySign(Math.max(Math.abs(currX - targetX) - toleranceX, 0), currX - targetX);
         int dY = (int) Math.copySign(Math.max(Math.abs(currY - targetY) - toleranceY, 0), currY - targetY);
 
@@ -154,8 +186,7 @@ public class MovementTool {
         // Drive slower when closer
         power *= Math.min(Math.hypot(dX, dY) / 100, 1.0);
 
-        // Calculate forward/backward, accounting for camera POV
-        power *= (location == TargetLocation.FLOOR ? 1 : -1) * Integer.signum(-dY);
+        power *= Integer.signum(-dY);
 
         mecanumDriveMove(0, power, angle);
     }
