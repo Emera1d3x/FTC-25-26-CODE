@@ -10,13 +10,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class FlyWheelLauncherTool {
     private int type = 0;
     // Team 1
-    private DcMotor motorFly;
+    //private DcMotor motorFly;
     private CRServo S1, S2;
     private Servo S3;
     private boolean servoActive = false;
     private boolean lastB = false;
     private final double SERVO_DOWN = 0.0;
-    private final double SERVO_UP = 0.5; // 90 degrees??
+    private final double SERVO_UP = 1.0;
     private ElapsedTime servoTimer = new ElapsedTime();
 
     public FlyWheelLauncherTool(HardwareMap hardwareMap, int type) {
@@ -31,12 +31,13 @@ public class FlyWheelLauncherTool {
     }
 
     private void initializeTool1(HardwareMap hardwareMap) {
-        motorFly = hardwareMap.get(DcMotor.class, "motorFly"); // Shooter Pin: 0 (Expansion Hub)
+        /*motorFly = hardwareMap.get(DcMotor.class, "motorFly"); // Shooter Pin: 0 (Expansion Hub)
         motorFly.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorFly.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        S1 = hardwareMap.get(CRServo.class, "S1"); // Pin: 1
-        S2 = hardwareMap.get(CRServo.class, "S2"); // Pin: 2
-        S3 = hardwareMap.get(Servo.class, "S3"); // Pin: 3
+        motorFly.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);*/
+        S1 = hardwareMap.get(CRServo.class, "S1"); // Pin: 0
+        S2 = hardwareMap.get(CRServo.class, "S2"); // Pin: 1
+        S3 = hardwareMap.get(Servo.class, "S3"); // Pin: 2
+        S3.scaleRange(0.35, 0.8);
         S3.setPosition(SERVO_DOWN);
     }
 
@@ -59,9 +60,9 @@ public class FlyWheelLauncherTool {
                 S3.setPosition(SERVO_DOWN);
                 servoActive = false;
             }
-            if (gamepad.right_bumper){
+            /*if (gamepad.right_bumper){
                 motorFly.setPower(0.5);
-            } else { motorFly.setPower(0);}
+            } else { motorFly.setPower(0);}*/
         } else if (type == 2){
 
         }
