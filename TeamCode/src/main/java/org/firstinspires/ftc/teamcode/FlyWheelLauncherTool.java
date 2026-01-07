@@ -15,8 +15,8 @@ public class FlyWheelLauncherTool {
     private Servo S3;
     private boolean servoActive = false;
     private boolean lastB = false;
-    private final double SERVO_DOWN = 0.0;
-    private final double SERVO_UP = 1.0;
+    private final double SERVO_DOWN = 0.5;//Adjusting bounds.
+    private final double SERVO_UP = 0.7;
     private ElapsedTime servoTimer = new ElapsedTime();
 
     public FlyWheelLauncherTool(HardwareMap hardwareMap, int type) {
