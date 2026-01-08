@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class FlyWheelLauncherTool {
     private int type = 0;
     // Team 1
-    //private DcMotor motorFly;
+    private DcMotor motorFly;
     private CRServo S1, S2;
     private Servo S3;
     private boolean servoActive = false;
@@ -31,9 +31,9 @@ public class FlyWheelLauncherTool {
     }
 
     private void initializeTool1(HardwareMap hardwareMap) {
-        /*motorFly = hardwareMap.get(DcMotor.class, "motorFly"); // Shooter Pin: 0 (Expansion Hub)
+        motorFly = hardwareMap.get(DcMotor.class, "motorFly"); // Shooter Pin: 0 (Expansion Hub)
         motorFly.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorFly.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);*/
+        motorFly.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         S1 = hardwareMap.get(CRServo.class, "S1"); // Pin: 0
         S2 = hardwareMap.get(CRServo.class, "S2"); // Pin: 1
         S3 = hardwareMap.get(Servo.class, "S3"); // Pin: 2
@@ -60,9 +60,9 @@ public class FlyWheelLauncherTool {
                 S3.setPosition(SERVO_DOWN);
                 servoActive = false;
             }
-            /*if (gamepad.right_bumper){
-                motorFly.setPower(0.5);
-            } else { motorFly.setPower(0);}*/
+            if (gamepad.right_bumper){
+                motorFly.setPower(1);
+            } else { motorFly.setPower(0);}
         } else if (type == 2){
 
         }
