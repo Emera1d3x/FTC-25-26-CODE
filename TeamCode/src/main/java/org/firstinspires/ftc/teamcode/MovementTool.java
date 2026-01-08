@@ -50,7 +50,7 @@ public class MovementTool {
 
         double theta = Math.atan2(x, y);
         double power = Math.sqrt(x*x + y*y);
-
+        //Set turn to 0.5, so we don't have to hold the right stick.
         mecanumDriveMove(Math.toDegrees(theta), power, turn);
     }
 
