@@ -76,9 +76,6 @@ public class FlyWheelLauncherTool {
             } else {
                 motorFly.setPower(0);
             }
-            /*if (gamepad.right_bumper){
-                motorFly.setPower(0.5);
-            } else { motorFly.setPower(0);}*/
         }
     }
 }

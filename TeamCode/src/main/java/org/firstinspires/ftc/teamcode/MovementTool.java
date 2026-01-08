@@ -50,7 +50,7 @@ public class MovementTool {
 
         double theta = Math.atan2(x, y);
         double power = Math.sqrt(x*x + y*y);
-
+        //Maybe use theta as turn value if this mechanism is too confusing. But have to test
         mecanumDriveMove(Math.toDegrees(theta), power, turn);
     }
 
