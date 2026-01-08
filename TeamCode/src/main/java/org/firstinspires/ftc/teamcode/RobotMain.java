@@ -55,13 +55,11 @@ public class RobotMain extends OpMode {
         }
 
         movementTool = (true) ? new MovementTool(hardwareMap) : null; // Edit boolean to switch on/off movementTool
-        int launcherType = 0; // Edit number to change launcher type
+        int launcherType = 1; // Edit number to change launcher type
         switch (launcherType) {
             case 1: // Team 1
-                launcherTool = new FlyWheelLauncherTool(hardwareMap, 1);
-                break;
-            case 2: // Team 2
-                launcherTool = null;
+            case 2:
+                launcherTool = new FlyWheelLauncherTool(hardwareMap, launcherType);
                 break;
             default: // Unavailable
                 launcherTool = null;

@@ -23,7 +23,7 @@ public final class CalibrationTool {
     public static final double BALL_MIN_CIRCULARITY = 0.0;
     public static final int CAMERA_EXPOSURE = 6; // ms
     public static final int CAMERA_GAIN = 250;
-    public static final boolean USE_DRIVE_ENCODERS = true;
+    public static final boolean USE_DRIVE_ENCODERS = false;
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * 3.14159;
     public static final double MOTOR_RPM = 130;
     public static final double DRIVE_ENCODER_CPI = // Counts Per Inch
