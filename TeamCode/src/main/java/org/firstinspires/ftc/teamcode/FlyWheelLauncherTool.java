@@ -20,13 +20,14 @@ public class FlyWheelLauncherTool {
     private final double SERVO_DOWN = 0.6; //Adjusting bounds.
     private final double SERVO_UP = 0.2;
     private final double INTAKE_SPEED = 0.7;
-    private double FLY_SPEED;
+    public double FLY_SPEED;
     private ElapsedTime servoTimer = new ElapsedTime();
+    private boolean lastAdjButton = false;
 
     public FlyWheelLauncherTool(HardwareMap hardwareMap) {
         if (TEAM_NUMBER == 1){
             initializeTool1(hardwareMap);
-            FLY_SPEED = 0.67;
+            FLY_SPEED = 0.64;
         } else { // 2
             initializeTool1(hardwareMap);
             FLY_SPEED = 1.0;
@@ -37,7 +38,7 @@ public class FlyWheelLauncherTool {
     private void initializeTool1(HardwareMap hardwareMap) {
         motorFly = hardwareMap.get(DcMotor.class, "motorFly"); // Shooter Pin: 0 (Expansion Hub)
         motorFly.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorFly.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorFly.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         S1 = hardwareMap.get(CRServo.class, "S1"); // Pin: 0
         S2 = hardwareMap.get(CRServo.class, "S2"); // Pin: 1
         S3 = hardwareMap.get(Servo.class, "S3"); // Pin: 2
@@ -45,6 +46,14 @@ public class FlyWheelLauncherTool {
     }
 
     public void launcherControl(Gamepad gamepad) {
+        boolean buttonUp = gamepad.x, buttonDown = gamepad.y;
+        if (buttonUp && !lastAdjButton) {
+            FLY_SPEED += 0.02;
+        } else if (buttonDown && !lastAdjButton) {
+            FLY_SPEED -= 0.02;
+        }
+        lastAdjButton = buttonUp || buttonDown;
+
         if (gamepad.right_bumper){
             S1.setPower(INTAKE_SPEED);
             S2.setPower(INTAKE_SPEED);
