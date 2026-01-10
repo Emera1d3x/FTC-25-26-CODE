@@ -7,12 +7,14 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.vision.VisionTool;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "AutonomousMain")
 public class AutonomousMain extends LinearOpMode {
     VisionTool vision;
     MovementTool movement;
     FlyWheelLauncherTool shootballs;
+    ElapsedTime aprilTagTimer = new ElapsedTime();
 
     void collectBall() {
         int x = 0, y = 0;
@@ -28,7 +30,8 @@ public class AutonomousMain extends LinearOpMode {
     }
 //Not sure if it will work
     void goToGoal(int id) {
-        while (true) {
+        elapsedTime.reset();
+        while (elapsedTime.seconds() < 3.0) {
             AprilTagDetection tag = vision.getTag(id);
             if (tag != null) {
                 double drive = (tag.ftcPose.range - 35); // 35in
