@@ -54,16 +54,8 @@ public class RobotMain extends OpMode {
                     .build();
         }
 
-        movementTool = (true) ? new MovementTool(hardwareMap) : null; // Edit boolean to switch on/off movementTool
-        int launcherType = 1; // Edit number to change launcher type
-        switch (launcherType) {
-            case 1: // Team 1
-            case 2:
-                launcherTool = new FlyWheelLauncherTool(hardwareMap, launcherType);
-                break;
-            default: // Unavailable
-                launcherTool = null;
-        }     
+        movementTool = new MovementTool(hardwareMap); // Edit boolean to switch on/off movementTool
+        launcherTool = new FlyWheelLauncherTool(hardwareMap);
 
         telemetry.addData("Launch Test:", "Successful");
         telemetry.addData("System Version", "1.0");

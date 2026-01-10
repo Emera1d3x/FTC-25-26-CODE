@@ -7,6 +7,11 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 
 public final class CalibrationTool {
+    /******************************************
+     * TEAM ID
+     *****************************************/
+    public static final int TEAM_NUMBER = 1;
+
     public static final double WHEEL_DIAMETER = 4.0;
     public static final int CAMERA_WIDTH = 640;
     public static final int CAMERA_HEIGHT = 480;
