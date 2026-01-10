@@ -26,7 +26,7 @@ public class FlyWheelLauncherTool {
     public FlyWheelLauncherTool(HardwareMap hardwareMap) {
         if (TEAM_NUMBER == 1){
             initializeTool1(hardwareMap);
-            FLY_SPEED = 0.6;
+            FLY_SPEED = 0.67;
         } else { // 2
             initializeTool1(hardwareMap);
             FLY_SPEED = 1.0;
