@@ -49,7 +49,7 @@ public class FlyWheelLauncherTool {
     public void launcherControl(Gamepad gamepad) {
         if (type == 0){
         } else if (type == 1 || type == 2){
-            if (gamepad.left_bumper){
+            if (gamepad.right_bumper){
                 S1.setPower(0.5);
                 S2.setPower(0.5);
             } else if (gamepad.a) {
@@ -59,7 +59,7 @@ public class FlyWheelLauncherTool {
                 S1.setPower(0);
                 S2.setPower(0);
             }
-            boolean chopstick = gamepad.left_trigger > 0.8;
+            boolean chopstick = gamepad.right_trigger > 0.8;
             if (chopstick && !lastChopstick && !servoActive) {
                 S3.setPosition(SERVO_UP);
                 servoTimer.reset();
@@ -71,7 +71,7 @@ public class FlyWheelLauncherTool {
                 servoActive = false;
             }
 
-            if (gamepad.right_bumper) {
+            if (gamepad.left_bumper) {
                 motorFly.setPower(FLY_SPEED);
             } else {
                 motorFly.setPower(0);
