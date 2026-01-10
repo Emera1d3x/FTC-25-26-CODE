@@ -67,4 +67,18 @@ public class FlyWheelLauncherTool {
 
         }
     }
+    public void autoShoot(int x){
+        for(int y = x; y<3; y++){
+            s1.setPower(0.5);
+            s1.setPower(0.5);
+            delay(750);
+            motorFly.setPower(0.5);
+            delay(100);
+            motorFly.setPower(0.5);
+            s3.setPosition(SERVO_UP);
+            delay(1000);
+            s3.setPosition(SERVO_DOWN);
+            delay(1000);
+        }
+    }
 }

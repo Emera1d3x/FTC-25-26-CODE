@@ -3,15 +3,16 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.vision.VisionTool;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
 @Autonomous(name = "AutonomousMain")
 public class AutonomousMain extends LinearOpMode {
     VisionTool vision;
     MovementTool movement;
+    FlyWheelLauncherTool shootballs;
 
     void collectBall() {
         int x = 0, y = 0;
@@ -25,18 +26,31 @@ public class AutonomousMain extends LinearOpMode {
 
         movement.relativeMove(1.0, 12, 12);
     }
-
+//Not sure if it will work
     void goToGoal(int id) {
-        // TODO
-    }
+         AprilTagDetection tag = vision.getTag(20);
+            if (tag != null)
+            {
+                double  drive      = (tag.ftcPose.range - DESIRED_DISTANCE);
+                double  turn    = -tag.ftcPose.bearing;
+                double  strafe        = tag.ftcPose.yaw;
+
+                movement.mecanumDriveMove(drive, turn, strafe, 0.1);
+            }
+            else
+            {
+                movement.mecanumDriveMove(0, 0.3, 1);
+            }
+        }
 
     void shootBalls() {
-        // TODO
+        shootballs.autoShoot(0);
     }
 
     @Override
     public void runOpMode() {
         movement = new MovementTool(hardwareMap);
+        shootballs = new FlyWheelLauncherTool(hardwareMap);
         vision = new VisionTool(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
         waitForStart();
