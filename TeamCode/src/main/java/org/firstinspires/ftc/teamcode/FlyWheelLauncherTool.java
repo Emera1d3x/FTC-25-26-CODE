@@ -19,6 +19,7 @@ public class FlyWheelLauncherTool {
     private boolean lastChopstick = false;
     private final double SERVO_DOWN = 0.6; //Adjusting bounds.
     private final double SERVO_UP = 0.2;
+    private final double INTAKE_SPEED = 0.7;
     private double FLY_SPEED;
     private ElapsedTime servoTimer = new ElapsedTime();
 
@@ -44,17 +45,17 @@ public class FlyWheelLauncherTool {
     }
 
     public void launcherControl(Gamepad gamepad) {
-        if (gamepad.left_bumper){
-            S1.setPower(0.5);
-            S2.setPower(0.5);
+        if (gamepad.right_bumper){
+            S1.setPower(INTAKE_SPEED);
+            S2.setPower(INTAKE_SPEED);
         } else if (gamepad.a) {
-            S1.setPower(-0.5);
-            S2.setPower(-0.5);
+            S1.setPower(-INTAKE_SPEED);
+            S2.setPower(-INTAKE_SPEED);
         } else {
             S1.setPower(0);
             S2.setPower(0);
         }
-        boolean chopstick = gamepad.left_trigger > 0.8;
+        boolean chopstick = gamepad.right_trigger > 0.8;
         if (chopstick && !lastChopstick && !servoActive) {
             S3.setPosition(SERVO_UP);
             servoTimer.reset();
@@ -66,7 +67,7 @@ public class FlyWheelLauncherTool {
             servoActive = false;
         }
 
-        if (gamepad.right_bumper) {
+        if (gamepad.left_bumper) {
             motorFly.setPower(FLY_SPEED);
         } else {
             motorFly.setPower(0);
@@ -79,8 +80,8 @@ public class FlyWheelLauncherTool {
 
         for (int y = 0; y < x; y++) {
             // Spin intake for 750ms
-            S1.setPower(0.5);
-            S2.setPower(0.5);
+            S1.setPower(INTAKE_SPEED);
+            S2.setPower(INTAKE_SPEED);
             sleep(750);
             S1.setPower(0);
             S2.setPower(0);
