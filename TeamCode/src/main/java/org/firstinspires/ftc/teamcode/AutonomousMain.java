@@ -28,11 +28,11 @@ public class AutonomousMain extends LinearOpMode {
     }
 //Not sure if it will work
     void goToGoal(int id) {
-         AprilTagDetection tag = vision.getTag(20);
+         AprilTagDetection tag = vision.getTag(id);
             if (tag != null)
             {
                 double  drive      = (tag.ftcPose.range - DESIRED_DISTANCE);
-                double  turn    = -tag.ftcPose.bearing;
+                double  turn = -tag.ftcPose.bearing;
                 double  strafe        = tag.ftcPose.yaw;
 
                 movement.mecanumDriveMove(drive, turn, strafe, 0.1);
