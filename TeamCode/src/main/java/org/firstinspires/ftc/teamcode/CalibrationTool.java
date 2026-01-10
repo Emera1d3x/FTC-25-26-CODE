@@ -9,7 +9,7 @@ import org.opencv.core.Size;
 public final class CalibrationTool {
     /******************************************
      * TEAM ID
-     *****************************************;/
+     *****************************************/
     public static final int TEAM_NUMBER = 1;
 
     public static final double WHEEL_DIAMETER = 4.0;
