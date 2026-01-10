@@ -86,8 +86,11 @@ public class FlyWheelLauncherTool {
         // Spin up flywheel
         motorFly.setPower(FLY_SPEED);
         sleep(1000);
-
         for (int y = 0; y < x; y++) {
+            S3.setPosition(SERVO_UP);
+            sleep(1000);
+            S3.setPosition(SERVO_DOWN);
+            sleep(1000);
             // Spin intake for 750ms
             S1.setPower(INTAKE_SPEED);
             S2.setPower(INTAKE_SPEED);
@@ -99,10 +102,7 @@ public class FlyWheelLauncherTool {
             sleep(500);
 
             // Lift ball into flywheel
-            S3.setPosition(SERVO_UP);
-            sleep(1000);
-            S3.setPosition(SERVO_DOWN);
-            sleep(1000);
+            
         }
     }
 }
