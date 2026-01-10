@@ -28,20 +28,24 @@ public class AutonomousMain extends LinearOpMode {
     }
 //Not sure if it will work
     void goToGoal(int id) {
-         AprilTagDetection tag = vision.getTag(id);
-            if (tag != null)
-            {
-                double  drive      = (tag.ftcPose.range - DESIRED_DISTANCE);
-                double  turn = -tag.ftcPose.bearing;
-                double  strafe        = tag.ftcPose.yaw;
+        while (true) {
+            AprilTagDetection tag = vision.getTag(id);
+            if (tag != null) {
+                double drive = (tag.ftcPose.range - 35); // 35in
+                double turn = -tag.ftcPose.bearing;
+                double strafe = tag.ftcPose.yaw;
 
-                movement.mecanumDriveMove(drive, turn, strafe, 0.1);
-            }
-            else
-            {
-                movement.mecanumDriveMove(0, 0.3, 1);
+                if (Math.abs(drive) < 0.3 && Math.abs(turn) < 0.3 && Math.abs(strafe) < 0.3)
+                    break;
+
+                movement.mecanumDriveMove(drive, turn, strafe, 0.3);
+            } else {
+                movement.mecanumDriveMove(0, 1, 0.3);
             }
         }
+
+        movement.brake();
+    }
 
     void shootBalls() {
         shootballs.autoShoot(0);
@@ -54,6 +58,7 @@ public class AutonomousMain extends LinearOpMode {
         vision = new VisionTool(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
         waitForStart();
+        movement.relativeMove(0.5, 72, 72);
 
         while (opModeIsActive()) {
             goToGoal(20);

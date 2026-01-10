@@ -70,10 +70,10 @@ public class MovementTool {
     }
 
     public void mecanumDriveMove(double drive, double turn, double strafe, double power) {
-        double topLeftPower = power * (drive + strafe + turn);
-        double topRightPower = power * (drive - strafe - turn);
-        double bottomLeftPower = power * (drive - strafe + turn);
-        double bottomRightPower = power * (drive + strafe - turn);
+        double topLeftPower = power * (drive + strafe) + turn;
+        double topRightPower = power * (drive - strafe) - turn;
+        double bottomLeftPower = power * (drive - strafe) + turn;
+        double bottomRightPower = power * (drive + strafe) - turn;
 
         // Normalize big values
         // If any is greater than 1.0 or less than -1.0, preserve direction
