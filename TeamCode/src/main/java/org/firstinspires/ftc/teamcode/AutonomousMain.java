@@ -30,20 +30,20 @@ public class AutonomousMain extends LinearOpMode {
     }
 //Not sure if it will work
     void goToGoal(int id) {
-        elapsedTime.reset();
-        while (elapsedTime.seconds() < 3.0) {
+        aprilTagTimer.reset();
+        while (aprilTagTimer.seconds() < 3.0) {
             AprilTagDetection tag = vision.getTag(id);
             if (tag != null) {
-                double drive = (tag.ftcPose.range - 35); // 35in
-                double turn = -tag.ftcPose.bearing;
-                double strafe = tag.ftcPose.yaw;
+                double drive = (tag.ftcPose.range - 35) / 30; // 35in
+                double turn = -tag.ftcPose.bearing / 90;
+                double strafe = tag.ftcPose.yaw / 90;
 
                 if (Math.abs(drive) < 0.3 && Math.abs(turn) < 0.3 && Math.abs(strafe) < 0.3)
                     break;
 
                 movement.mecanumDriveMove(drive, turn, strafe, 0.3);
             } else {
-                movement.mecanumDriveMove(0, 1, 0.3);
+                movement.mecanumDriveMove(0, 0, 0.3);
             }
         }
 
