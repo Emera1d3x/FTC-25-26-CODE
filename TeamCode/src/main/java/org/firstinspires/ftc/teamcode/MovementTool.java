@@ -202,4 +202,11 @@ public class MovementTool {
 
         mecanumDriveMove(0, power, angle);
     }
+    void escapeTriangle(int power){
+        motorTL.setPower(-0.5);
+        motorTR.setPower(-0.5);
+        motorBL.setPower(-0.5);
+        motorBR.setPower(-0.5);
+        delay(3000);
+    }
 }

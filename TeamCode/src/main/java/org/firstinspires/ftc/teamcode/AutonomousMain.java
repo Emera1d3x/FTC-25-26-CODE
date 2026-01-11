@@ -48,6 +48,8 @@ public class AutonomousMain extends LinearOpMode {
 
     void shootBalls() {
         shootballs.autoShoot(3);
+        //Don't know how to turn with drive train, so being dumb
+        movement.escapeTriangle();
     }
 
     @Override
