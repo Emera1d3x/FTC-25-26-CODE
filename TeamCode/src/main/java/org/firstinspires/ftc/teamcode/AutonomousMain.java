@@ -7,14 +7,12 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.vision.VisionTool;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "AutonomousMain")
 public class AutonomousMain extends LinearOpMode {
     VisionTool vision;
     MovementTool movement;
     FlyWheelLauncherTool shootballs;
-    ElapsedTime aprilTagTimer = new ElapsedTime();
 
     void collectBall() {
         int x = 0, y = 0;
@@ -28,13 +26,11 @@ public class AutonomousMain extends LinearOpMode {
 
         movement.relativeMove(1.0, 12, 12);
     }
-//Not sure if it will work
-    void goToGoal(int id) {
-        aprilTagTimer.reset();
-        while (aprilTagTimer.seconds() < 3.0) {
-            AprilTagDetection tag = vision.getTag(id);
+    void goToGoal() {
+        while (opModeIsActive()) {
+            AprilTagDetection tag = vision.getTag(GOAL_ID);
             if (tag != null) {
-                double drive = (tag.ftcPose.range - 35) / 30; // 35in
+                double drive = (tag.ftcPose.range - 35) / 15; // 35in
                 double turn = -tag.ftcPose.bearing / 90;
                 double strafe = tag.ftcPose.yaw / 90;
 
@@ -43,7 +39,7 @@ public class AutonomousMain extends LinearOpMode {
 
                 movement.mecanumDriveMove(drive, turn, strafe, 0.3);
             } else {
-                movement.mecanumDriveMove(0, 0, 0.3);
+                movement.mecanumDriveMove(0, 0, 0.55);
             }
         }
 
@@ -51,7 +47,7 @@ public class AutonomousMain extends LinearOpMode {
     }
 
     void shootBalls() {
-        shootballs.autoShoot(0);
+        shootballs.autoShoot(3);
     }
 
     @Override
@@ -63,10 +59,8 @@ public class AutonomousMain extends LinearOpMode {
         waitForStart();
         movement.relativeMove(0.5, 72, 72);
 
-        while (opModeIsActive()) {
-            goToGoal(20);
+        goToGoal();
+        if (opModeIsActive())
             shootBalls();
-            collectBall();
-        }
     }
 }

@@ -87,11 +87,13 @@ public class FlyWheelLauncherTool {
         motorFly.setPower(FLY_SPEED);
         sleep(1000);
         for (int y = 0; y < x; y++) {
+            // Lift chopsticks up and down
             S3.setPosition(SERVO_UP);
             sleep(1000);
             S3.setPosition(SERVO_DOWN);
             sleep(1000);
-            // Spin intake for 750ms
+
+            // Spin intake to push balls forward
             S1.setPower(INTAKE_SPEED);
             S2.setPower(INTAKE_SPEED);
             sleep(750);
@@ -100,9 +102,7 @@ public class FlyWheelLauncherTool {
 
             // wait a bit
             sleep(500);
-
-            // Lift ball into flywheel
-            
         }
+        motorFly.setPower(0);
     }
 }
