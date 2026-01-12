@@ -39,7 +39,7 @@ public class AutonomousMain extends LinearOpMode {
 
                 movement.mecanumDriveMove(drive, turn, strafe, 0.3);
             } else {
-                movement.mecanumDriveMove(0, 0, 0.55);
+                movement.mecanumDriveMove(0, 0, 0.8);
             }
         }
 
@@ -50,6 +50,9 @@ public class AutonomousMain extends LinearOpMode {
         shootballs.autoShoot(3);
         //Don't know how to turn with drive train, so being dumb
         movement.escapeTriangle();
+    }
+    void autoCollect(){
+        shootballs.autoIntake();
     }
 
     @Override
@@ -64,5 +67,10 @@ public class AutonomousMain extends LinearOpMode {
         goToGoal();
         if (opModeIsActive())
             shootBalls();
+            autoIntake();
+            goTogoal();
+            shootballs();
+            
     }
+    
 }

@@ -82,6 +82,15 @@ public class FlyWheelLauncherTool {
             motorFly.setPower(0);
         }
     }
+    public void autoIntake(){//What I personally call the being stupid special
+        S1.setPower(INTAKE_SPEED);
+        S2.setPower(INTAKE_SPEED);
+        movement.relativeMove(0.5, 24,72);
+        s1.setPower(0);
+        S2.setPower(0);
+        movement.relativeMove(0.5, 72,10);
+        movement.relativeMove(0.5, 72,72);
+    }
     public void autoShoot(int x){
         // Spin up flywheel
         motorFly.setPower(FLY_SPEED);
