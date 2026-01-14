@@ -18,7 +18,7 @@ public class FlyWheelLauncherTool {
     private boolean servoActive = false;
     private boolean lastChopstick = false;
     private final double SERVO_DOWN = 0.6; //Adjusting bounds.
-    private final double SERVO_UP = 0.2;
+    private final double SERVO_UP = 0.1;
     private final double INTAKE_SPEED = 0.7;
     public double FLY_SPEED;
     private ElapsedTime servoTimer = new ElapsedTime();
@@ -45,6 +45,16 @@ public class FlyWheelLauncherTool {
         S3.setPosition(SERVO_DOWN);
     }
 
+    public void setIntake(boolean on) {
+        if (on) {
+            S1.setPower(INTAKE_SPEED);
+            S2.setPower(INTAKE_SPEED);
+        } else {
+            S1.setPower(0);
+            S2.setPower(0);
+        }
+    }
+
     public void launcherControl(Gamepad gamepad) {
         boolean buttonUp = gamepad.x, buttonDown = gamepad.y;
         if (buttonUp && !lastAdjButton) {
@@ -54,24 +64,22 @@ public class FlyWheelLauncherTool {
         }
         lastAdjButton = buttonUp || buttonDown;
 
-        if (gamepad.right_bumper){
-            S1.setPower(INTAKE_SPEED);
-            S2.setPower(INTAKE_SPEED);
+        if (gamepad.right_bumper) {
+            setIntake(true);
         } else if (gamepad.a) {
             S1.setPower(-INTAKE_SPEED);
             S2.setPower(-INTAKE_SPEED);
         } else {
-            S1.setPower(0);
-            S2.setPower(0);
+            setIntake(false);
         }
         boolean chopstick = gamepad.right_trigger > 0.8;
         if (chopstick && !lastChopstick && !servoActive) {
             S3.setPosition(SERVO_UP);
             servoTimer.reset();
-            servoActive = true;
+         servoActive = true;
         }
         lastChopstick = chopstick;
-        if (servoActive && servoTimer.seconds() >= 1.0) {
+        if (servoActive && servoTimer.seconds() >= 0.2) {
             S3.setPosition(SERVO_DOWN);
             servoActive = false;
         }
@@ -82,15 +90,7 @@ public class FlyWheelLauncherTool {
             motorFly.setPower(0);
         }
     }
-    public void autoIntake(){//What I personally call the being stupid special
-        S1.setPower(INTAKE_SPEED);
-        S2.setPower(INTAKE_SPEED);
-        movement.relativeMove(0.5, 24,72);
-        s1.setPower(0);
-        S2.setPower(0);
-        movement.relativeMove(0.5, 72,10);
-        movement.relativeMove(0.5, 72,72);
-    }
+
     public void autoShoot(int x){
         // Spin up flywheel
         motorFly.setPower(FLY_SPEED);
@@ -103,11 +103,9 @@ public class FlyWheelLauncherTool {
             sleep(1000);
 
             // Spin intake to push balls forward
-            S1.setPower(INTAKE_SPEED);
-            S2.setPower(INTAKE_SPEED);
+            setIntake(true);
             sleep(750);
-            S1.setPower(0);
-            S2.setPower(0);
+            setIntake(false);
 
             // wait a bit
             sleep(500);

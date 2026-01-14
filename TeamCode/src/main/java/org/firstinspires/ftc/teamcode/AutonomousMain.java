@@ -18,28 +18,34 @@ public class AutonomousMain extends LinearOpMode {
         int x = 0, y = 0;
 
         while (y < CAMERA_HEIGHT * 0.8 || x < CAMERA_WIDTH * 0.3 || x > CAMERA_WIDTH * 0.7) {
+            if (!opModeIsActive())
+            {
+                movement.brake();
+                return;
+            }
+
             x = vision.getBallX();
             y = vision.getBallY();
 
             movement.driveToTarget(x, y, CAMERA_WIDTH / 2, CAMERA_HEIGHT, CAMERA_HEIGHT / 10, CAMERA_HEIGHT / 10, 0.3);
         }
 
-        movement.relativeMove(1.0, 12, 12);
+        movement.relativeMove(0.4, 12, 12);
     }
     void goToGoal() {
         while (opModeIsActive()) {
             AprilTagDetection tag = vision.getTag(GOAL_ID);
             if (tag != null) {
-                double drive = (tag.ftcPose.range - 35) / 15; // 35in
+                double drive = (tag.ftcPose.range - 60) / 25; // 35in
                 double turn = -tag.ftcPose.bearing / 90;
                 double strafe = tag.ftcPose.yaw / 90;
 
-                if (Math.abs(drive) < 0.3 && Math.abs(turn) < 0.3 && Math.abs(strafe) < 0.3)
+                if (Math.abs(drive) < 0.3 && Math.abs(turn) < 0.2 && Math.abs(strafe) < 0.2)
                     break;
 
                 movement.mecanumDriveMove(drive, turn, strafe, 0.3);
             } else {
-                movement.mecanumDriveMove(0, 0, 0.8);
+                movement.mecanumDriveMove(0, 0, 0.55);
             }
         }
 
@@ -48,11 +54,6 @@ public class AutonomousMain extends LinearOpMode {
 
     void shootBalls() {
         shootballs.autoShoot(3);
-        //Don't know how to turn with drive train, so being dumb
-        movement.escapeTriangle();
-    }
-    void autoCollect(){
-        shootballs.autoIntake();
     }
 
     @Override
@@ -65,12 +66,19 @@ public class AutonomousMain extends LinearOpMode {
         movement.relativeMove(0.5, 72, 72);
 
         goToGoal();
-        if (opModeIsActive())
-            shootBalls();
-            autoIntake();
-            goTogoal();
-            shootballs();
-            
+        if (!opModeIsActive())
+            return;
+        shootBalls();
+        if (!opModeIsActive())
+            return;
+        for (int i = 0; i < 3 && opModeIsActive(); ++i)
+            collectBall();
+        if (!opModeIsActive())
+            return;
+        goToGoal();
+        if (!opModeIsActive())
+            return;
+        shootBalls();
     }
     
 }

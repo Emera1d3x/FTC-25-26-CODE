@@ -67,6 +67,9 @@ public class InternalBallVisionProcessor implements VisionProcessor {
         maskGreen.release();
         maskPurple.release();
 
+        Rect roi = new Rect(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT/2);
+        Imgproc.rectangle(mask, roi, new Scalar(0));
+
         // Blur to reduce noise
         Imgproc.blur(mask, mask, BALL_BLUR_SIZE);
         Core.inRange(mask, new Scalar(100), new Scalar(255), mask);
