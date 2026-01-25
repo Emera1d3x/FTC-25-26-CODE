@@ -50,7 +50,7 @@ public class MovementTool {
         x *= 0.85;
         y *= 0.85;
         turn *= 0.85;
-        if (gamepad.b){
+        if (gamepad.left_trigger){
             x *= 0.5;
             y *= 0.5;
             turn *= 0.5;
