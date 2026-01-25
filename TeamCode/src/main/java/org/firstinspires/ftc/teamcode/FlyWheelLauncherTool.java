@@ -19,7 +19,7 @@ public class FlyWheelLauncherTool {
     private boolean lastChopstick = false;
     private final double SERVO_DOWN = 0.6; //Adjusting bounds.
     private final double SERVO_UP = 0.1;
-    private final double INTAKE_SPEED = 0.7;
+    private final double INTAKE_SPEED = 1;
     public double FLY_SPEED;
     private ElapsedTime servoTimer = new ElapsedTime();
     private boolean lastAdjButton = false;
@@ -56,7 +56,7 @@ public class FlyWheelLauncherTool {
     }
 
     public void launcherControl(Gamepad gamepad) {
-        boolean buttonUp = gamepad.x, buttonDown = gamepad.y;
+        boolean buttonUp = gamepad.y, buttonDown = gamepad.x;
         if (buttonUp && !lastAdjButton) {
             FLY_SPEED += 0.02;
         } else if (buttonDown && !lastAdjButton) {
@@ -79,7 +79,7 @@ public class FlyWheelLauncherTool {
          servoActive = true;
         }
         lastChopstick = chopstick;
-        if (servoActive && servoTimer.seconds() >= 0.2) {
+        if (servoActive && servoTimer.seconds() >= 0.5) {
             S3.setPosition(SERVO_DOWN);
             servoActive = false;
         }

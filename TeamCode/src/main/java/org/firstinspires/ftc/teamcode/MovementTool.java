@@ -47,7 +47,14 @@ public class MovementTool {
         double x = gamepad.left_stick_x;
         double y = -gamepad.left_stick_y;
         double turn = gamepad.right_stick_x;
-
+        x *= 0.85;
+        y *= 0.85;
+        turn *= 0.85;
+        if (gamepad.b){
+            x *= 0.5;
+            y *= 0.5;
+            turn *= 0.5;
+        }
         double theta = Math.atan2(x, y);
         double power = Math.sqrt(x*x + y*y);
         //Maybe use theta as turn value if this mechanism is too confusing. But have to test
