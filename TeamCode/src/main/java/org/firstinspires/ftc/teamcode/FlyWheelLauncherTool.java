@@ -17,7 +17,7 @@ public class FlyWheelLauncherTool {
     private Servo S3;
     private boolean servoActive = false;
     private boolean lastChopstick = false;
-    private final double SERVO_DOWN = 0.6; //Adjusting bounds.
+    private final double SERVO_DOWN = 0.6;
     private final double SERVO_UP = 0.1;
     private final double INTAKE_SPEED = 1;
     public double FLY_SPEED;
@@ -108,7 +108,7 @@ public class FlyWheelLauncherTool {
             setIntake(false);
 
             // wait a bit
-            sleep(500);
+            sleep(750);
         }
         motorFly.setPower(0);
     }

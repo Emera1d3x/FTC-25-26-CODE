@@ -47,13 +47,10 @@ public class MovementTool {
         double x = gamepad.left_stick_x;
         double y = -gamepad.left_stick_y;
         double turn = gamepad.right_stick_x;
-        x *= 0.85;
-        y *= 0.85;
-        turn *= 0.85;
         if (gamepad.left_trigger > 0.5){
-            x *= 0.5;
-            y *= 0.5;
-            turn *= 0.5;
+            x *= 0.4;
+            y *= 0.4;
+            turn *= 0.4;
         }
         double theta = Math.atan2(x, y);
         double power = Math.sqrt(x*x + y*y);
@@ -96,10 +93,10 @@ public class MovementTool {
             bottomRightPower /= max;
         }
 
-        motorTL.setPower(topLeftPower);
-        motorTR.setPower(topRightPower);
-        motorBL.setPower(bottomLeftPower);
-        motorBR.setPower(bottomRightPower);
+        motorTL.setPower(topLeftPower * 0.7);
+        motorTR.setPower(topRightPower * 0.7);
+        motorBL.setPower(bottomLeftPower * 0.7);
+        motorBR.setPower(bottomRightPower * 0.7);
     }
 
     public void brake() {
@@ -109,8 +106,8 @@ public class MovementTool {
         motorBR.setPower(0);
     }
 
-    // NOTE: `power` is IGNORED when `USE_DRIVE_ENCODERS == false`
     public void relativeMove(double power, double leftInches, double rightInches) {
+        power *= 0.6;
         if (USE_DRIVE_ENCODERS) {
             int encoderTargetTL = motorTL.getCurrentPosition() + (int) (leftInches * DRIVE_ENCODER_CPI);
             int encoderTargetBL = motorBL.getCurrentPosition() + (int) (leftInches * DRIVE_ENCODER_CPI);
@@ -138,18 +135,18 @@ public class MovementTool {
         } else { // USE_DRIVE_ENCODERS
 
             // inches / inch per millisecond
-            double leftDriveTime = Math.abs(leftInches) / (MOTOR_RPM / 60000 * WHEEL_CIRCUMFERENCE);
-            double rightDriveTime = Math.abs(rightInches) / (MOTOR_RPM / 60000 * WHEEL_CIRCUMFERENCE);
+            double leftDriveTime = Math.abs(leftInches) / (MOTOR_RPM / 60000 * WHEEL_CIRCUMFERENCE * power);
+            double rightDriveTime = Math.abs(rightInches) / (MOTOR_RPM / 60000 * WHEEL_CIRCUMFERENCE * power);
 
             ElapsedTime elapsed = new ElapsedTime();
             elapsed.reset();
 
             boolean leftDone = false, rightDone = false;
 
-            motorTL.setPower(Math.signum(leftInches));
-            motorTR.setPower(Math.signum(rightInches));
-            motorBL.setPower(Math.signum(leftInches));
-            motorBR.setPower(Math.signum(rightInches));
+            motorTL.setPower(Math.signum(leftInches) * power);
+            motorTR.setPower(Math.signum(rightInches) * power);
+            motorBL.setPower(Math.signum(leftInches) * power);
+            motorBR.setPower(Math.signum(rightInches) * power);
 
             while (!leftDone || !rightDone) {
                 double ms = elapsed.milliseconds();
