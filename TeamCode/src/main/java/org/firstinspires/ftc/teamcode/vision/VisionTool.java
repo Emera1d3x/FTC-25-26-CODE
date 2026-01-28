@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.vision;
 
 import static android.os.SystemClock.sleep;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -17,13 +19,13 @@ import java.util.concurrent.TimeUnit;
 
 public class VisionTool {
     Servo cameraServo;
-    public VisionTool(WebcamName webcam) {
+    public VisionTool(HardwareMap hardwareMap) {
         ballProcessor = new InternalBallVisionProcessor();
         tagProcessor = new AprilTagProcessor.Builder().build();
-        cameraServo = hardwarMap.get(Servo.class, cameraServo);
+        cameraServo = hardwareMap.get(Servo.class, "cameraServo");
         drawingProcessor = new InternalDrawingProcessor();
         portal = new VisionPortal.Builder()
-                .setCamera(webcam)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .setCameraResolution(new android.util.Size(CAMERA_WIDTH, CAMERA_HEIGHT))
                 .addProcessors(ballProcessor, tagProcessor, drawingProcessor)
                 .enableLiveView(CAMERA_LIVE_VIEW)
@@ -56,13 +58,13 @@ public class VisionTool {
     public void removeText(String label) { drawingProcessor.removeText(label); }
     //Servo's are coded
     public void switchToBalls() {
-        cameraServo.setDirection(0.7);
+        cameraServo.setPosition(0.7);
         portal.setProcessorEnabled(ballProcessor, true);
         portal.setProcessorEnabled(tagProcessor, false);
     }
 
     public void switchToTags() {
-        cameraServo.setDirection(1.0);
+        cameraServo.setPosition(1.0);
         portal.setProcessorEnabled(ballProcessor, false);
         portal.setProcessorEnabled(tagProcessor, true);
     }

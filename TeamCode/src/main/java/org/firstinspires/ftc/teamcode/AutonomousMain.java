@@ -74,7 +74,7 @@ public class AutonomousMain extends LinearOpMode {
     public void runOpMode() {
         movement = new MovementTool(hardwareMap);
         shootballs = new FlyWheelLauncherTool(hardwareMap);
-        vision = new VisionTool(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        vision = new VisionTool(hardwareMap);
         vision.switchToTags();
         telemetry.addData("status", "initialized");
         telemetry.update();
