@@ -18,16 +18,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class VisionTool {
-    Servo cameraServo;
     public VisionTool(HardwareMap hardwareMap) {
         ballProcessor = new InternalBallVisionProcessor();
         tagProcessor = new AprilTagProcessor.Builder().build();
         cameraServo = hardwareMap.get(Servo.class, "cameraServo");
-        drawingProcessor = new InternalDrawingProcessor();
         portal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .setCameraResolution(new android.util.Size(CAMERA_WIDTH, CAMERA_HEIGHT))
-                .addProcessors(ballProcessor, tagProcessor, drawingProcessor)
+                .addProcessors(ballProcessor, tagProcessor)
                 .enableLiveView(CAMERA_LIVE_VIEW)
                 .build();
 
@@ -44,7 +42,7 @@ public class VisionTool {
             exposure.setMode(ExposureControl.Mode.Manual);
             sleep(50);
         }
-        exposure.setExposure((long)CAMERA_EXPOSURE, TimeUnit.MILLISECONDS);
+        exposure.setExposure(CAMERA_EXPOSURE, TimeUnit.MILLISECONDS);
         sleep(20);
         GainControl gain = portal.getCameraControl(GainControl.class);
         gain.setGain(CAMERA_GAIN);
@@ -54,9 +52,6 @@ public class VisionTool {
     public int getBallX() { return ballProcessor.getResult().getX(); }
     public int getBallY() { return ballProcessor.getResult().getY(); }
 
-    public void addText(String label, String data) { drawingProcessor.addText(label, data); }
-    public void removeText(String label) { drawingProcessor.removeText(label); }
-    //Servo's are coded
     public void switchToBalls() {
         cameraServo.setPosition(0.7);
         portal.setProcessorEnabled(ballProcessor, true);
@@ -70,18 +65,6 @@ public class VisionTool {
     }
 
     public List<AprilTagDetection> getTags() { return tagProcessor.getDetections(); }
-    public boolean isTagPresent(int id) {
-        for (AprilTagDetection detection : getTags())
-            if (detection.id == id)
-                return true;
-        return false;
-    }
-    public Point getTagCenter(int id) {
-        for (AprilTagDetection detection : getTags())
-            if (detection.id == id)
-                return new Point(detection.center.x, detection.center.y);
-        return new Point(CAMERA_WIDTH, CAMERA_HEIGHT);
-    }
 
     public AprilTagDetection getTag(int id) {
         for (AprilTagDetection detection : getTags())
@@ -94,6 +77,6 @@ public class VisionTool {
 
     private final VisionPortal portal;
     private final InternalBallVisionProcessor ballProcessor;
-    private final InternalDrawingProcessor drawingProcessor;
     private final AprilTagProcessor tagProcessor;
+    private final Servo cameraServo;
 }
