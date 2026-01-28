@@ -30,7 +30,7 @@ public class AutonomousMain extends LinearOpMode {
             movement.driveToTarget(x, y, CAMERA_WIDTH / 2, CAMERA_HEIGHT, CAMERA_HEIGHT / 10, CAMERA_HEIGHT / 10, 0.3);
         }
 
-        movement.relativeMove(0.4, 12, 12);
+        movement.relativeMove(0.8, 120, 120);//More time driving
     }
     void goToGoal() {
         while (opModeIsActive()) {
@@ -40,12 +40,12 @@ public class AutonomousMain extends LinearOpMode {
                 double turn = -tag.ftcPose.bearing / 90;
                 double strafe = tag.ftcPose.yaw / 90;
 
-                if (Math.abs(drive) < 0.3 && Math.abs(turn) < 0.2 && Math.abs(strafe) < 0.2)
+                if (Math.abs(drive) < 0.23 && Math.abs(turn) < 0.13 && Math.abs(strafe) < 0.13)//0.07 less tolerance
                     break;
 
                 movement.mecanumDriveMove(drive, turn, strafe, 0.3);
             } else {
-                movement.mecanumDriveMove(0, 0, 0.55);
+                movement.mecanumDriveMove(0, 0, 0.65);//Faster turn
             }
         }
 
@@ -71,8 +71,15 @@ public class AutonomousMain extends LinearOpMode {
         shootBalls();
         if (!opModeIsActive())
             return;
-        for (int i = 0; i < 3 && opModeIsActive(); ++i)
-            collectBall();
+        //Sample path (needs tuning)
+        servoIntake(true);
+        movement.relativeMove(0.6, 30, 30);
+        movement.mecanumDriveMove(90,0.7,-0.8);
+        movement.mecanumDriveMove(45,0.7,-0.8);
+        movement.relativeMove(1.0,100,100);
+        movement.relativeMove(0.7,-60,-60);
+        //for (int i = 0; i < 3 && opModeIsActive(); ++i)
+            //collectBall();
         if (!opModeIsActive())
             return;
         goToGoal();

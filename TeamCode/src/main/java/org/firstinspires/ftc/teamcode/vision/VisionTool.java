@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.vision;
 
 import static android.os.SystemClock.sleep;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
-
+import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
@@ -16,9 +16,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class VisionTool {
+    Servo cameraServo;
     public VisionTool(WebcamName webcam) {
         ballProcessor = new InternalBallVisionProcessor();
         tagProcessor = new AprilTagProcessor.Builder().build();
+        cameraServo = hardwarMap.get(Servo.class, cameraServo);
         drawingProcessor = new InternalDrawingProcessor();
         portal = new VisionPortal.Builder()
                 .setCamera(webcam)
@@ -52,13 +54,15 @@ public class VisionTool {
 
     public void addText(String label, String data) { drawingProcessor.addText(label, data); }
     public void removeText(String label) { drawingProcessor.removeText(label); }
-
+    //Servo's are coded
     public void switchToBalls() {
+        cameraServo.setDirection(0.7);
         portal.setProcessorEnabled(ballProcessor, true);
         portal.setProcessorEnabled(tagProcessor, false);
     }
 
     public void switchToTags() {
+        cameraServo.setDirection(1.0);
         portal.setProcessorEnabled(ballProcessor, false);
         portal.setProcessorEnabled(tagProcessor, true);
     }

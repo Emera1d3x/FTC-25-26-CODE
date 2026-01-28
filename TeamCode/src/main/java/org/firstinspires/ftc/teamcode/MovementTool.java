@@ -135,7 +135,7 @@ public class MovementTool {
             brake();
 
             setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        } else { // USE_DRIVE_ENCODERS
+        } else { //USE_DRIVE_ENCODERS == false
 
             // inches / inch per millisecond
             double leftDriveTime = Math.abs(leftInches) / (MOTOR_RPM / 60000 * WHEEL_CIRCUMFERENCE);
