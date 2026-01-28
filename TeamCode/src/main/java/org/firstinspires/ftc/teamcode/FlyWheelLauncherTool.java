@@ -98,13 +98,13 @@ public class FlyWheelLauncherTool {
         for (int y = 0; y < x; y++) {
             // Lift chopsticks up and down
             S3.setPosition(SERVO_UP);
-            sleep(1000);
+            sleep(500);
             S3.setPosition(SERVO_DOWN);
-            sleep(1000);
+            sleep(500);
 
             // Spin intake to push balls forward
             setIntake(true);
-            sleep(750);
+            sleep(1000);//Longer push speed
             setIntake(false);
 
             // wait a bit

@@ -30,17 +30,22 @@ public class AutonomousMain extends LinearOpMode {
             movement.driveToTarget(x, y, CAMERA_WIDTH / 2, CAMERA_HEIGHT, CAMERA_HEIGHT / 20, CAMERA_HEIGHT / 20, 0.5);
         }
 
-        movement.relativeMove(1, 96, 96);
+        movement.relativeMove(0.8, 96, 96);
     }
+
+    static double clamp(double x) {
+        return Math.min(Math.max(x, -1.0), 1.0);
+    }
+
     void goToGoal() {
         while (opModeIsActive()) {
             AprilTagDetection tag = vision.getTag(GOAL_ID);
             if (tag != null) {
-                double drive = (tag.ftcPose.range - 60) / 20;
+                double drive = (tag.ftcPose.range - 60) / 40;
                 double turn = -tag.ftcPose.bearing / 15;
                 double strafe = tag.ftcPose.yaw / 8;
 
-                if (Math.abs(drive) < 0.5 && Math.abs(turn) < 0.5 && Math.abs(strafe) < 0.5)
+                if (Math.abs(drive) < 0.23 && Math.abs(turn) < 0.13 && Math.abs(strafe) < 0.13)//0.07 less tolerance
                     break;
 
                 telemetry.addData("status", "moving towards goal");
@@ -48,7 +53,7 @@ public class AutonomousMain extends LinearOpMode {
                 telemetry.addData("turn", -tag.ftcPose.bearing);
                 telemetry.addData("strafe", tag.ftcPose.yaw);
                 telemetry.update();
-                movement.mecanumDriveMove(Math.signum(drive) * 0.5, Math.signum(turn) * 0.35, Math.signum(strafe) * 0.5, 1);
+                movement.mecanumDriveMove(clamp(drive), clamp(turn), clamp(strafe), 0.5);
             } else {
                 telemetry.addData("status", "finding goal");
                 telemetry.update();
@@ -70,6 +75,7 @@ public class AutonomousMain extends LinearOpMode {
         movement = new MovementTool(hardwareMap);
         shootballs = new FlyWheelLauncherTool(hardwareMap);
         vision = new VisionTool(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        vision.switchToTags();
         telemetry.addData("status", "initialized");
         telemetry.update();
 
@@ -79,14 +85,22 @@ public class AutonomousMain extends LinearOpMode {
         movement.relativeMove(0.7, 72, 72);
 
         goToGoal();
+        vision.switchToBalls();
         if (!opModeIsActive())
             return;
         shootBalls();
+        vision.switchToTags();
         if (!opModeIsActive())
             return;
+        //Sample path (needs tuning)
         shootballs.setIntake(true);
-        for (int i = 0; i < 3 && opModeIsActive(); ++i)
-            collectBall();
+        movement.relativeMove(0.6, 30, 30);
+        movement.mecanumDriveMove(90,0.7,-0.8);
+        movement.mecanumDriveMove(45,0.7,-0.8);
+        movement.relativeMove(1.0,100,100);
+        movement.relativeMove(0.7,-60,-60);
+        //for (int i = 0; i < 3 && opModeIsActive(); ++i)
+            //collectBall();
         shootballs.setIntake(false);
         if (!opModeIsActive())
             return;
