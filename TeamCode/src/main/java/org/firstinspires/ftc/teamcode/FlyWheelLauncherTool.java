@@ -64,7 +64,7 @@ public class FlyWheelLauncherTool {
         }
         lastAdjButton = buttonUp || buttonDown;
 
-        if (gamepad.right_bumper) {
+        if (gamepad.right_bumper && s3.getPosition() == 0.6) {
             setIntake(true);
         } else if (gamepad.a) {
             S1.setPower(-INTAKE_SPEED);
