@@ -42,6 +42,7 @@ public class FlyWheelLauncherTool {
         S1 = hardwareMap.get(CRServo.class, "S1"); // Pin: 0
         S2 = hardwareMap.get(CRServo.class, "S2"); // Pin: 1
         S3 = hardwareMap.get(Servo.class, "S3"); // Pin: 2
+        S4 = hardwareMap.get(Servo.class, "S4");
         S3.setPosition(SERVO_DOWN);
     }
 
@@ -63,7 +64,7 @@ public class FlyWheelLauncherTool {
             FLY_SPEED -= 0.02;
         }
         lastAdjButton = buttonUp || buttonDown;
-
+        if(TEAMNUMBER=1){            
         if (gamepad.right_bumper && s3.getPosition() == 0.6) {
             setIntake(true);
         } else if (gamepad.a) {
@@ -83,6 +84,29 @@ public class FlyWheelLauncherTool {
             S3.setPosition(SERVO_DOWN);
             servoActive = false;
         }
+    }
+        else{//2
+            if (gamepad.right_bumper && s3.getPosition() == 0.6) {
+            setIntake(true);
+        } else if (gamepad.a) {
+            S1.setPower(-INTAKE_SPEED);
+            S2.setPower(-INTAKE_SPEED);
+        } else {
+            setIntake(false);
+        }
+        boolean chopstick = gamepad.right_trigger > 0.8;
+        if (chopstick && !lastChopstick && !servoActive) {
+            S4.setPower(1);
+            servoTimer.reset();
+         servoActive = true;
+        }
+        lastChopstick = chopstick;
+        if (!chopstick) {
+            S4.setPower(-1);
+            servoActive = false;
+        }
+        }
+
 
         if (gamepad.left_bumper) {
             motorFly.setPower(FLY_SPEED);
