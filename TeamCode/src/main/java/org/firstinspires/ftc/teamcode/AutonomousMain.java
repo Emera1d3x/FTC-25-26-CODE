@@ -93,10 +93,9 @@ public class AutonomousMain extends LinearOpMode {
             return;
         //Sample path (needs tuning)
         shootballs.setIntake(true);
-        movement.relativeMove(0.6, 30, 30);
-        movement.mecanumDriveMove(90,0.7,-0.8);
-        movement.mecanumDriveMove(45,0.7,-0.8);
-        movement.relativeMove(1.0,100,100);
+        movement.mecanumDriveMove(0,0,0.5);
+        sleep(1000);
+        movement.relativeMove(0.7,100,100);
         movement.relativeMove(0.7,-60,-60);
         //for (int i = 0; i < 3 && opModeIsActive(); ++i)
             //collectBall();
