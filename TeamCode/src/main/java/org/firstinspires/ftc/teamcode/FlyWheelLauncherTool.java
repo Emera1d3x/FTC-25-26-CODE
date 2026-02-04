@@ -13,12 +13,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class FlyWheelLauncherTool {
     // Team 1
     private DcMotor motorFly;
-    private CRServo S1, S2;
+    private CRServo S1, S2, S4;
     private Servo S3;
     private boolean servoActive = false;
     private boolean lastChopstick = false;
-    private final double SERVO_DOWN = 0.6;
-    private final double SERVO_UP = 0.1;
+    private final double SERVO_DOWN = 0.45;
+    private final double SERVO_UP = 0.0;
     private final double INTAKE_SPEED = 1;
     public double FLY_SPEED;
     private ElapsedTime servoTimer = new ElapsedTime();
@@ -37,12 +37,12 @@ public class FlyWheelLauncherTool {
 
     private void initializeTool1(HardwareMap hardwareMap) {
         motorFly = hardwareMap.get(DcMotor.class, "motorFly"); // Shooter Pin: 0 (Expansion Hub)
-        motorFly.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorFly.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         motorFly.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         S1 = hardwareMap.get(CRServo.class, "S1"); // Pin: 0
         S2 = hardwareMap.get(CRServo.class, "S2"); // Pin: 1
         S3 = hardwareMap.get(Servo.class, "S3"); // Pin: 2
-        S4 = hardwareMap.get(Servo.class, "S4");
+        S4 = hardwareMap.get(CRServo.class, "S4");
         S3.setPosition(SERVO_DOWN);
     }
 
@@ -64,52 +64,56 @@ public class FlyWheelLauncherTool {
             FLY_SPEED -= 0.02;
         }
         lastAdjButton = buttonUp || buttonDown;
-        if(TEAMNUMBER=1){            
-        if (gamepad.right_bumper && s3.getPosition() == 0.6) {
-            setIntake(true);
-        } else if (gamepad.a) {
-            S1.setPower(-INTAKE_SPEED);
-            S2.setPower(-INTAKE_SPEED);
-        } else {
-            setIntake(false);
+        if(TEAM_NUMBER==1){
+            if (gamepad.right_bumper && !servoActive) {
+                setIntake(true);
+            } else if (gamepad.a) {
+                S1.setPower(-INTAKE_SPEED);
+                S2.setPower(-INTAKE_SPEED);
+            } else {
+                setIntake(false);
+            }
+            boolean chopstick = gamepad.right_trigger > 0.8;
+            if (chopstick && !lastChopstick && !servoActive) {
+                S3.setPosition(SERVO_UP);
+                servoTimer.reset();
+             servoActive = true;
+            }
+            lastChopstick = chopstick;
+            if (servoActive && servoTimer.seconds() >= 0.5) {
+                S3.setPosition(SERVO_DOWN);
+                servoActive = false;
+            }
         }
-        boolean chopstick = gamepad.right_trigger > 0.8;
-        if (chopstick && !lastChopstick && !servoActive) {
-            S3.setPosition(SERVO_UP);
-            servoTimer.reset();
-         servoActive = true;
-        }
-        lastChopstick = chopstick;
-        if (servoActive && servoTimer.seconds() >= 0.5) {
-            S3.setPosition(SERVO_DOWN);
-            servoActive = false;
-        }
-    }
         else{//2
-            if (gamepad.right_bumper && s3.getPosition() == 0.6) {
-            setIntake(true);
-        } else if (gamepad.a) {
-            S1.setPower(-INTAKE_SPEED);
-            S2.setPower(-INTAKE_SPEED);
-        } else {
-            setIntake(false);
-        }
-        boolean chopstick = gamepad.right_trigger > 0.8;
-        if (chopstick && !lastChopstick && !servoActive) {
-            S4.setPower(1);
-            servoTimer.reset();
-         servoActive = true;
-        }
-        lastChopstick = chopstick;
-        if (!chopstick) {
-            S4.setPower(-1);
-            servoActive = false;
-        }
+            if (gamepad.right_bumper) {
+                setIntake(true);
+            } else if (gamepad.a) {
+                S1.setPower(-INTAKE_SPEED);
+                S2.setPower(-INTAKE_SPEED);
+            } else {
+                setIntake(false);
+            }
+
+            // lifter control
+            boolean chopstick = gamepad.right_trigger > 0.8;
+            if (chopstick != lastChopstick) {
+                if (chopstick) { // just pressed
+                    S4.setPower(1);
+                } else { // just released
+                    S4.setPower(-1);
+                    sleep(1000);
+                    S4.setPower(0);
+                }
+            }
+            lastChopstick = chopstick;
         }
 
 
         if (gamepad.left_bumper) {
             motorFly.setPower(FLY_SPEED);
+        } else if (gamepad.b) {
+            motorFly.setPower(-0.2);
         } else {
             motorFly.setPower(0);
         }

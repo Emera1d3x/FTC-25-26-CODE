@@ -53,13 +53,13 @@ public class VisionTool {
     public int getBallY() { return ballProcessor.getResult().getY(); }
 
     public void switchToBalls() {
-        cameraServo.setPosition(0.7);
+        cameraServo.setPosition(0.35);
         portal.setProcessorEnabled(ballProcessor, true);
         portal.setProcessorEnabled(tagProcessor, false);
     }
 
     public void switchToTags() {
-        cameraServo.setPosition(1.0);
+        cameraServo.setPosition(0.5);
         portal.setProcessorEnabled(ballProcessor, false);
         portal.setProcessorEnabled(tagProcessor, true);
     }
