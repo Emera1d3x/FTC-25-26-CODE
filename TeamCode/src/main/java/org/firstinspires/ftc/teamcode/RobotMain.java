@@ -25,14 +25,12 @@ public class RobotMain extends OpMode {
 
     @Override
     public void init() {
-
         HardwareMap hardwareMap = this.hardwareMap;
+
         tagProcessor = new AprilTagProcessor.Builder().build();
-
-
-        movementTool = new MovementTool(hardwareMap); // Edit boolean to switch on/off movementTool
+        movementTool = new MovementTool(hardwareMap);
         launcherTool = new FlyWheelLauncherTool(hardwareMap);
-
+        
         telemetry.addData("Launch Test:", "Successful");
         telemetry.addData("System Version", "1.0");
         telemetry.addData("Controller One", gamepad1.toString());
