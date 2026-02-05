@@ -13,6 +13,8 @@ public class FlywheelTool {
     public FlywheelTool(HardwareMap hardwareMap) {
         if (CalibrationTool.TEAM_NUMBER == 1) {
             hardware = new Team1Flywheel(hardwareMap);
+        } else {
+            hardware = new Team2Flywheel(hardwareMap);
         }
     }
 
