@@ -34,6 +34,9 @@ public class Team1Flywheel implements HardwareControl {
         chopstickServo.setPosition(up ? SERVO_UP : SERVO_DOWN);
     }
 
+    @Override
+    public void setFlyWheelAngle(boolean up, boolean down) {}
+
     private CRServo intakeServo0, intakeServo1;
     private Servo chopstickServo;
     private DcMotor flywheelMotor;
