@@ -12,7 +12,8 @@ public class Team2Flywheel implements HardwareControl {
     private static final int ELEVATOR_TIME = 750; // milliseconds
     public Team2Flywheel(HardwareMap hardwareMap) {
         intakeServo = hardwareMap.get(CRServo.class, "S1");
-        elevatorServo = hardwareMap.get(CRServo.class, "S3");
+        elevatorServo = hardwareMap.get(CRServo.class, "S2");
+        flyWheelAngle = hardwareMap.get(CRServo.class, "S3");
         flywheelMotor = hardwareMap.get(DcMotor.class, "motorFly");
         flywheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -28,6 +29,12 @@ public class Team2Flywheel implements HardwareControl {
     public void setFlywheel(double speed) {
         flywheelMotor.setPower(speed);
     }
+    @Override
+    public void setFlyWheelAngle(boolean forward, boolean backward){
+        flyWheelAngle.setPower(forward?0.2:0);
+        flyWheelAngle.setPower(backward?-0.2:0);
+    }
+
 
     @Override
     public void setElevator(boolean up) {
@@ -40,7 +47,7 @@ public class Team2Flywheel implements HardwareControl {
         elevatorServo.setPower(0);
     }
 
-    private CRServo intakeServo, elevatorServo;
+    private CRServo intakeServo, elevatorServo, flyWheelAngle;
     private DcMotor flywheelMotor;
     private boolean isUp = false;
 }

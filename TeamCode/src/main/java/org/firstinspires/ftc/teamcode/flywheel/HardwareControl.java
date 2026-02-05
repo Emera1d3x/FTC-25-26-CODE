@@ -13,6 +13,7 @@ interface HardwareControl {
      */
     void setElevator(boolean position);
 
+    void setFlyWheelAngle(boolean forward, boolean backward);
     /**
      * Set the speed of the flywheel
      * @param speed The speed, from -1.0 to 1.0, with positive values to shoot a ball

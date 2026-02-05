@@ -19,7 +19,7 @@ public class FlywheelTool {
     }
 
     public void setIntake(boolean on) { hardware.setIntake(on ? INTAKE_SPEED : 0); }
-    public void setIntakeReverse(boolean on) { hardware.setIntake(on ? -INTAKE_SPEED : 0); }
+    public void setIntakeReverse(boolean on) { hardware.setIntake(on ? -INTAKE_SPEED : 0); }//Makes no sence to me?
 
     public void launcherControl(Gamepad gamepad) {
         // Flywheel speed adjustment
@@ -48,7 +48,10 @@ public class FlywheelTool {
         } else {
             setIntake(false);
         }
-
+        boolean positiveAngleAdjustor = gamepad.dpad_up;
+        boolean negativeAngleAdjustor = gamepad.dpad_down;
+        if(positiveAngleAdjustor)
+            flyWheelAngle(positiveAngleAdjustor, negativeAngleAdjustor);
         // Lifter control
         boolean elevatorBtn = gamepad.right_trigger > 0.75;
         if (elevatorTimer.seconds() >= 0.5) {
