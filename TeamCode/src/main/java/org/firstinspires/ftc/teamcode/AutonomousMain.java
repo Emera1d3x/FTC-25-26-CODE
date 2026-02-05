@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import org.firstinspires.ftc.teamcode.flywheel.FlywheelTool;
 import org.firstinspires.ftc.teamcode.vision.VisionTool;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
@@ -11,7 +12,7 @@ import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 public class AutonomousMain extends LinearOpMode {
     VisionTool vision;
     MovementTool movement;
-    FlyWheelLauncherTool shootballs;
+    FlywheelTool shootballs;
 
     void collectBall() {
         int x = 0, y = 0;
