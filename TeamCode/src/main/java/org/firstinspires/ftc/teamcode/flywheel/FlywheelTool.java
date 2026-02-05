@@ -3,18 +3,19 @@ package org.firstinspires.ftc.teamcode.flywheel;
 import static android.os.SystemClock.sleep;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.CalibrationTool;
 
 
-public abstract class FlywheelTool {
-    FlywheelTool(HardwareControl hardware)
-    {
-        this.hardware = hardware;
+public class FlywheelTool {
+    public FlywheelTool(HardwareMap hardwareMap) {
+        if (CalibrationTool.TEAM_NUMBER == 1) {
+            hardware = new Team1Flywheel(hardwareMap);
+        }
     }
 
-    // Compatibilty
     public void setIntake(boolean on) { hardware.setIntake(on ? INTAKE_SPEED : 0); }
     public void setIntakeReverse(boolean on) { hardware.setIntake(on ? -INTAKE_SPEED : 0); }
 

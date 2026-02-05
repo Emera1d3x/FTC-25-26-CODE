@@ -73,7 +73,7 @@ public class AutonomousMain extends LinearOpMode {
     @Override
     public void runOpMode() {
         movement = new MovementTool(hardwareMap);
-        shootballs = new FlyWheelLauncherTool(hardwareMap);
+        shootballs = new FlywheelTool(hardwareMap);
         vision = new VisionTool(hardwareMap);
         vision.switchToTags();
         telemetry.addData("status", "initialized");

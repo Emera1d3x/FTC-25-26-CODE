@@ -24,7 +24,7 @@ public class RobotMain extends OpMode {
 
         tagProcessor = new AprilTagProcessor.Builder().build();
         movementTool = new MovementTool(hardwareMap);
-        launcherTool = new FlyWheelLauncherTool(hardwareMap);
+        launcherTool = new FlywheelTool(hardwareMap);
         
         telemetry.addData("Launch Test:", "Successful");
         telemetry.addData("System Version", "1.0");
