@@ -50,7 +50,8 @@ public class FlywheelTool {
         }
         boolean positiveAngleAdjustor = gamepad.dpad_up;
         boolean negativeAngleAdjustor = gamepad.dpad_down;
-        hardware.setFlyWheelAngle(positiveAngleAdjustor, negativeAngleAdjustor);
+        /*if(positiveAngleAdjustor)
+            flyWheelAngle(positiveAngleAdjustor, negativeAngleAdjustor);*/
         // Lifter control
         boolean elevatorBtn = gamepad.right_trigger > 0.75;
         if (elevatorTimer.seconds() >= 0.5) {

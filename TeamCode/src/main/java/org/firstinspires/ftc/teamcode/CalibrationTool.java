@@ -10,7 +10,7 @@ public final class CalibrationTool {
     /******************************************
      * TEAM ID
      *****************************************/
-    public static final int TEAM_NUMBER = 1; // team 1 or team 2
+    public static final int TEAM_NUMBER = 2; // team 1 or team 2
     public static final int GOAL_ID = 20; // Blue: 20, Red: 24
 
     public static final double WHEEL_DIAMETER = 4.0;
@@ -33,5 +33,5 @@ public final class CalibrationTool {
     public static final double DRIVE_ENCODER_CPI = // Counts Per Inch
             (50.9 * 7) / WHEEL_CIRCUMFERENCE; // Counts per revolution / Wheel Circumference
     public static final double INTAKE_SPEED = 1.0;
-    public static final double FLYWHEEL_SPEED = (TEAM_NUMBER == 1 ? 0.64 : 1.0);
+    public static final double FLYWHEEL_SPEED = (TEAM_NUMBER == 1 ? 0.64 : 0.64);
 }

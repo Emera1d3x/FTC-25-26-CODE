@@ -1,18 +1,17 @@
 package org.firstinspires.ftc.teamcode.flywheel;
 
-import static android.os.SystemClock.sleep;
-
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Team2Flywheel implements HardwareControl {
-    private static final double ELEVATOR_SPEED = 1.0;
+    private static final double ELEVATOR_SPEED = 0.25;
     private static final int ELEVATOR_TIME = 750; // milliseconds
     public Team2Flywheel(HardwareMap hardwareMap) {
         intakeServo = hardwareMap.get(CRServo.class, "S1");
-        elevatorServo = hardwareMap.get(CRServo.class, "S2");
+        elevatorServo = hardwareMap.get(Servo.class, "S2");
         flyWheelAngle = hardwareMap.get(CRServo.class, "S3");
         flywheelMotor = hardwareMap.get(DcMotor.class, "motorFly");
         flywheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -38,16 +37,11 @@ public class Team2Flywheel implements HardwareControl {
 
     @Override
     public void setElevator(boolean up) {
-        if (up == isUp) return;
-        isUp = up;
-
-        // FIXME elevator servo spin direction
-        elevatorServo.setPower(up ? ELEVATOR_SPEED : -ELEVATOR_SPEED);
-        sleep(ELEVATOR_TIME);
-        elevatorServo.setPower(0);
+        elevatorServo.setPosition(up ? 1 : 0);
     }
 
-    private CRServo intakeServo, elevatorServo, flyWheelAngle;
+    private CRServo intakeServo, flyWheelAngle;
+    private Servo elevatorServo;
     private DcMotor flywheelMotor;
     private boolean isUp = false;
 }
