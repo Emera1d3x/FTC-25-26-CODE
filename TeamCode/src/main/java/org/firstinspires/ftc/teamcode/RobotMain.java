@@ -23,7 +23,7 @@ public class RobotMain extends OpMode {
         HardwareMap hardwareMap = this.hardwareMap;
 
         tagProcessor = new AprilTagProcessor.Builder().build();
-        movementTool = null;
+        movementTool = new MovementTool(hardwareMap);;
         launcherTool = new FlywheelTool(hardwareMap);
         
         telemetry.addData("Launch Test:", "Successful");

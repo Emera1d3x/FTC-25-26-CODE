@@ -78,35 +78,67 @@ public class AutonomousMain extends LinearOpMode {
         vision.switchToTags();
         telemetry.addData("status", "initialized");
         telemetry.update();
-
+        
         waitForStart();
-        telemetry.addData("status", "driving forward");
-        telemetry.update();
-        movement.relativeMove(0.7, 72, 72);
+        if (AUTO_ROUTINE == 1) {
+            telemetry.addData("status", "driving forward");
+            telemetry.update();
+            movement.relativeMove(0.7, 72, 72);
 
-        goToGoal();
-        vision.switchToBalls();
-        if (!opModeIsActive())
-            return;
-        shootBalls();
-        vision.switchToTags();
-        if (!opModeIsActive())
-            return;
-        //Sample path (needs tuning)
-        shootballs.setIntake(true);
-        movement.mecanumDriveMove(0,0,0.5);
-        sleep(1000);
-        movement.relativeMove(0.7,100,100);
-        movement.relativeMove(0.7,-60,-60);
-        //for (int i = 0; i < 3 && opModeIsActive(); ++i)
-            //collectBall();
-        shootballs.setIntake(false);
-        if (!opModeIsActive())
-            return;
-        goToGoal();
-        if (!opModeIsActive())
-            return;
-        shootBalls();
+            goToGoal();
+            vision.switchToBalls();
+            if (!opModeIsActive())
+                return;
+            shootBalls();
+            vision.switchToTags();
+            if (!opModeIsActive())
+                return;
+            //Sample path (needs tuning)
+            shootballs.setIntake(true);
+            movement.mecanumDriveMove(0,0,0.5);
+            sleep(1000);
+            movement.relativeMove(0.7,100,100);
+            movement.relativeMove(0.7,-60,-60);
+            //for (int i = 0; i < 3 && opModeIsActive(); ++i)
+                //collectBall();
+            shootballs.setIntake(false);
+            if (!opModeIsActive())
+                return;
+            goToGoal();
+            if (!opModeIsActive())
+                return;
+            shootBalls();
+        } else if (AUTO_ROUTINE == 2){
+            // REQUIRES CALIBRATION
+            telemetry.addData("status", "driving forward");
+            telemetry.update();
+            movement.relativeMove(0.7, 72, 72);
+            
+            goToGoal();
+            vision.switchToBalls();
+            if (!opModeIsActive())
+                return;
+            shootBalls();
+            vision.switchToTags();
+            if (!opModeIsActive())
+                return;
+            //Sample path (needs tuning)  THIS PATH NEEDS TO CHANGE
+            shootballs.setIntake(true);
+            movement.mecanumDriveMove(0,0,0.5);
+            sleep(1000);
+            movement.relativeMove(0.7,100,100);
+            movement.relativeMove(0.7,-60,-60);
+            //for (int i = 0; i < 3 && opModeIsActive(); ++i)
+                //collectBall();
+            shootballs.setIntake(false);
+            if (!opModeIsActive())
+                return;
+            goToGoal();
+            if (!opModeIsActive())
+                return;
+        }
+        
+        
     }
     
 }
