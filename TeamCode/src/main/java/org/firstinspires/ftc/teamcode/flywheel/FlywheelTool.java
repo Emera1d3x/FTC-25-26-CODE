@@ -19,7 +19,7 @@ public class FlywheelTool {
     }
 
     public void setIntake(boolean on) { hardware.setIntake(on ? INTAKE_SPEED : 0); }
-    public void setIntakeReverse(boolean on) { hardware.setIntake(on ? -INTAKE_SPEED : 0); }//Makes no sence to me?
+    public void setIntakeReverse(boolean on) { hardware.setIntake(on ? -INTAKE_SPEED : 0); }
 
     public void launcherControl(Gamepad gamepad) {
         // Flywheel speed adjustment

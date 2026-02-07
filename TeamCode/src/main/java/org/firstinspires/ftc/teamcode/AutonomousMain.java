@@ -98,8 +98,8 @@ public class AutonomousMain extends LinearOpMode {
             movement.mecanumDriveMove(0,0,0.5);
             sleep(1000);
             movement.relativeMove(0.7,100,100);
-            //movement.relativeMove(0.7,-60,-60);
-            //for (int i = 0; i < 3 && opModeIsActive(); ++i)
+            /*movement.relativeMove(0.7,-60,-60);
+            for (int i = 0; i < 3 && opModeIsActive(); ++i)
                 //collectBall();
             shootballs.setIntake(false);
             if (!opModeIsActive())
@@ -107,7 +107,7 @@ public class AutonomousMain extends LinearOpMode {
             goToGoal();
             if (!opModeIsActive())
                 return;
-            shootBalls();
+            shootBalls();*/
         } else if (AUTO_ROUTINE == 2){
             // REQUIRES CALIBRATION
             telemetry.addData("status", "driving forward");
@@ -127,7 +127,7 @@ public class AutonomousMain extends LinearOpMode {
             movement.mecanumDriveMove(0,0,0.5);
             sleep(1000);
             movement.relativeMove(0.7,100,100);
-            //movement.relativeMove(0.7,-60,-60);
+            /*movement.relativeMove(0.7,-60,-60);
             //for (int i = 0; i < 3 && opModeIsActive(); ++i)
                 //collectBall();
             shootballs.setIntake(false);
@@ -136,6 +136,7 @@ public class AutonomousMain extends LinearOpMode {
             goToGoal();
             if (!opModeIsActive())
                 return;
+            */
         }
         
         
