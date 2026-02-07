@@ -8,8 +8,7 @@ import org.firstinspires.ftc.teamcode.vision.VisionTool;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
-@Autonomous(name = "AutonomousMain", preselectTeleOp = "RobotMain")
-public class AutonomousMain extends LinearOpMode {
+public abstract class AutonomousMain extends LinearOpMode {
     VisionTool vision;
     MovementTool movement;
     FlywheelTool shootballs;
@@ -37,9 +36,11 @@ public class AutonomousMain extends LinearOpMode {
         return Math.min(Math.max(x, -1.0), 1.0);
     }
 
+    abstract int getSide(); // 0 blue, 1 red
+
     void goToGoal() {
         while (opModeIsActive()) {
-            AprilTagDetection tag = vision.getTag(GOAL_ID);
+            AprilTagDetection tag = vision.getTag(getSide() == 1 ? 24 : 20);
             if (tag != null) {
                 double drive = (tag.ftcPose.range - 60) / 40;
                 double turn = -tag.ftcPose.bearing / 15;
@@ -80,66 +81,26 @@ public class AutonomousMain extends LinearOpMode {
         telemetry.update();
         
         waitForStart();
-        if (AUTO_ROUTINE == 1) {
-            telemetry.addData("status", "driving forward");
-            telemetry.update();
-            movement.relativeMove(0.7, 72, 72);
+        telemetry.addData("status", "driving forward");
+        telemetry.update();
+        movement.relativeMove(0.7, 72, 72);
 
-            goToGoal();
-            vision.switchToBalls();
-            if (!opModeIsActive())
-                return;
-            shootBalls();
-            vision.switchToTags();
-            if (!opModeIsActive())
-                return;
-            //Sample path (needs tuning)
-            shootballs.setIntake(true);
-            movement.mecanumDriveMove(0,0,0.5);
-            sleep(1000);
-            movement.relativeMove(0.7,100,100);
-            /*movement.relativeMove(0.7,-60,-60);
-            for (int i = 0; i < 3 && opModeIsActive(); ++i)
-                //collectBall();
-            shootballs.setIntake(false);
-            if (!opModeIsActive())
-                return;
-            goToGoal();
-            if (!opModeIsActive())
-                return;
-            shootBalls();*/
-        } else if (AUTO_ROUTINE == 2){
-            // REQUIRES CALIBRATION
-            telemetry.addData("status", "driving forward");
-            telemetry.update();
-            movement.relativeMove(0.7, 72, 72);
-            
-            goToGoal();
-            vision.switchToBalls();
-            if (!opModeIsActive())
-                return;
-            shootBalls();
-            vision.switchToTags();
-            if (!opModeIsActive())
-                return;
-            //Sample path (needs tuning)  THIS PATH NEEDS TO CHANGE
-            shootballs.setIntake(true);
-            movement.mecanumDriveMove(0,0,0.5);
-            sleep(1000);
-            movement.relativeMove(0.7,100,100);
-            /*movement.relativeMove(0.7,-60,-60);
-            //for (int i = 0; i < 3 && opModeIsActive(); ++i)
-                //collectBall();
-            shootballs.setIntake(false);
-            if (!opModeIsActive())
-                return;
-            goToGoal();
-            if (!opModeIsActive())
-                return;
-            */
+        goToGoal();
+        vision.switchToBalls();
+        if (!opModeIsActive())
+            return;
+        shootBalls();
+        vision.switchToTags();
+
+        if (getSide() == 0) {
+            // blue
+            movement.mecanumDriveMove(-90, 0.5, 0);
+        } else {
+            // red
+            movement.mecanumDriveMove(90, 0.5, 0);
         }
-        
-        
+        sleep(500);
+        movement.brake();
     }
-    
+
 }
