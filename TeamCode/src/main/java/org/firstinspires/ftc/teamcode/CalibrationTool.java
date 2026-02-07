@@ -29,7 +29,7 @@ public final class CalibrationTool {
     public static final int CAMERA_GAIN = 250;
     public static final boolean USE_DRIVE_ENCODERS = false;
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * 3.14159;
-    public static final double MOTOR_RPM = 344;
+    public static final double MOTOR_RPM = TEAM_NUMBER == 1 ? 344 : 130;
     public static final double DRIVE_ENCODER_CPI = // Counts Per Inch
             (50.9 * 7) / WHEEL_CIRCUMFERENCE; // Counts per revolution / Wheel Circumference
     public static final double INTAKE_SPEED = 1.0;
