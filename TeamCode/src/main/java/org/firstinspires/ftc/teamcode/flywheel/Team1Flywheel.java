@@ -14,7 +14,7 @@ public class Team1Flywheel implements HardwareControl {
         intakeServo1 = hardwareMap.get(CRServo.class, "S2");
         chopstickServo = hardwareMap.get(Servo.class, "S3");
         flywheelMotor = hardwareMap.get(DcMotor.class, "motorFly");
-        flywheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        flywheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 

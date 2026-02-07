@@ -14,9 +14,8 @@ public class Team2Flywheel implements HardwareControl {
         elevatorServo = hardwareMap.get(Servo.class, "S2");
         flyWheelAngle = hardwareMap.get(CRServo.class, "S3");
         flywheelMotor = hardwareMap.get(DcMotor.class, "motorFly");
-        flywheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        flywheelMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         flywheelMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        flywheelMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     @Override
