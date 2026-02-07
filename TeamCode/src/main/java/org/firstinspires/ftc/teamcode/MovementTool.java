@@ -107,7 +107,7 @@ public class MovementTool {
     }
 
     public void relativeMove(double power, double leftInches, double rightInches) {
-        power *= 0.6;
+        power *= DRIVETRAIN_SPEED;
         if (USE_DRIVE_ENCODERS) {
             int encoderTargetTL = motorTL.getCurrentPosition() + (int) (leftInches * DRIVE_ENCODER_CPI);
             int encoderTargetBL = motorBL.getCurrentPosition() + (int) (leftInches * DRIVE_ENCODER_CPI);

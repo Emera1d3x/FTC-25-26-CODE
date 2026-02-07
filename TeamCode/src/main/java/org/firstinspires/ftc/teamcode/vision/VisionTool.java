@@ -4,7 +4,6 @@ import static android.os.SystemClock.sleep;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
@@ -21,7 +20,6 @@ public class VisionTool {
     public VisionTool(HardwareMap hardwareMap) {
         ballProcessor = new InternalBallVisionProcessor();
         tagProcessor = new AprilTagProcessor.Builder().build();
-        cameraServo = hardwareMap.get(Servo.class, "cameraServo");
         portal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .setCameraResolution(new android.util.Size(CAMERA_WIDTH, CAMERA_HEIGHT))
@@ -53,13 +51,11 @@ public class VisionTool {
     public int getBallY() { return ballProcessor.getResult().getY(); }
 
     public void switchToBalls() {
-        cameraServo.setPosition(0.35);
         portal.setProcessorEnabled(ballProcessor, true);
         portal.setProcessorEnabled(tagProcessor, false);
     }
 
     public void switchToTags() {
-        cameraServo.setPosition(0.5);
         portal.setProcessorEnabled(ballProcessor, false);
         portal.setProcessorEnabled(tagProcessor, true);
     }
@@ -78,5 +74,4 @@ public class VisionTool {
     private final VisionPortal portal;
     private final InternalBallVisionProcessor ballProcessor;
     private final AprilTagProcessor tagProcessor;
-    private final Servo cameraServo;
 }

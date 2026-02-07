@@ -53,7 +53,7 @@ public class FlywheelTool {
         /*if(positiveAngleAdjustor)
             flyWheelAngle(positiveAngleAdjustor, negativeAngleAdjustor);*/
         // Lifter control
-        boolean elevatorBtn = gamepad.right_trigger > 0.75;
+        boolean elevatorBtn = gamepad.right_trigger > 0.5;
         if (elevatorTimer.seconds() >= 0.5) {
             hardware.setElevator(elevatorBtn);
             elevatorTimer.reset();
@@ -62,17 +62,17 @@ public class FlywheelTool {
 
     public void autoShoot(int count){
         hardware.setFlywheel(FLY_SPEED);
-        sleep(1000);
+        sleep(2000);
         for (int i = 0; i < count; ++i) {
             // Lift chopsticks up and down
             hardware.setElevator(true);
-            sleep(500);
+            sleep(2000);
             hardware.setElevator(false);
             sleep(500);
 
             // Spin intake to push balls forward
             setIntake(true);
-            sleep(1000);//Longer push speed
+            sleep(850);//Longer push speed
             setIntake(false);
 
             // wait a bit

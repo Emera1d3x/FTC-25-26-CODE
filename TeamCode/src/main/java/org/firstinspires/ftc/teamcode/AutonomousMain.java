@@ -42,11 +42,11 @@ public abstract class AutonomousMain extends LinearOpMode {
         while (opModeIsActive()) {
             AprilTagDetection tag = vision.getTag(getSide() == 1 ? 24 : 20);
             if (tag != null) {
-                double drive = (tag.ftcPose.range - 60) / 40;
-                double turn = -tag.ftcPose.bearing / 15;
-                double strafe = tag.ftcPose.yaw / 8;
+                double drive = (tag.ftcPose.range - 61) / 40;
+                double turn = -tag.ftcPose.bearing / 30;
+                double strafe = tag.ftcPose.yaw / 22;
 
-                if (Math.abs(drive) < 0.23 && Math.abs(turn) < 0.13 && Math.abs(strafe) < 0.13)//0.07 less tolerance
+                if (Math.abs(drive) < 0.15 && Math.abs(turn) < 0.08 && Math.abs(strafe) < 0.1)//0.07 less tolerance
                     break;
 
                 telemetry.addData("status", "moving towards goal");
@@ -94,12 +94,12 @@ public abstract class AutonomousMain extends LinearOpMode {
 
         if (getSide() == 0) {
             // blue
-            movement.mecanumDriveMove(-90, 0.5, 0);
+            movement.mecanumDriveMove(-90, 1.0, 0);
         } else {
             // red
-            movement.mecanumDriveMove(90, 0.5, 0);
+            movement.mecanumDriveMove(90, 1.0, 0);
         }
-        sleep(500);
+        sleep(2000);
         movement.brake();
     }
 
