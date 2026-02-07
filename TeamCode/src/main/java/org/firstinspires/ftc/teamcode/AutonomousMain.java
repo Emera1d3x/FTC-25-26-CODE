@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.vision.VisionTool;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import static org.firstinspires.ftc.teamcode.CalibrationTool.*;
 
-@Autonomous(name = "AutonomousMain")
+@Autonomous(name = "AutonomousMain", preselectTeleOp = "RobotMain")
 public class AutonomousMain extends LinearOpMode {
     VisionTool vision;
     MovementTool movement;
