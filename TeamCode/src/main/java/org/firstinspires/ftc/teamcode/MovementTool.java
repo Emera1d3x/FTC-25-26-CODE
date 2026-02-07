@@ -93,10 +93,10 @@ public class MovementTool {
             bottomRightPower /= max;
         }
 
-        motorTL.setPower(topLeftPower * 0.7);
-        motorTR.setPower(topRightPower * 0.7);
-        motorBL.setPower(bottomLeftPower * 0.7);
-        motorBR.setPower(bottomRightPower * 0.7);
+        motorTL.setPower(topLeftPower * 0.85);
+        motorTR.setPower(topRightPower * 0.85);
+        motorBL.setPower(bottomLeftPower * 0.85);
+        motorBR.setPower(bottomRightPower * 0.85);
     }
 
     public void brake() {
