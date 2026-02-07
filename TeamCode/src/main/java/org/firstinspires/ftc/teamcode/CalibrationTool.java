@@ -10,10 +10,10 @@ public final class CalibrationTool {
     /******************************************
      * TEAM ID
      *****************************************/
-    public static final int TEAM_NUMBER = 2; // team 1 or team 2
+    public static final int TEAM_NUMBER = 1; // team 1 or team 2
     public static final int AUTO_ROUTINE = 1; // 1 is starting off near the glass wall, 2 is near the goal
-    public static final int GOAL_ID = 20; // Blue: 20, Red: 24
-    public static final int DRIVETRAIN_SPEED = (TEAM_NUMBER == 1)? 0.7: 0.85; // Speed adjustment based on preference
+    //public static final int GOAL_ID = 20; // Blue: 20, Red: 24
+    public static final double DRIVETRAIN_SPEED = (TEAM_NUMBER == 1)? 0.7: 0.85; // Speed adjustment based on preference
 
     public static final double WHEEL_DIAMETER = 4.0;
     public static final int CAMERA_WIDTH = 640;
