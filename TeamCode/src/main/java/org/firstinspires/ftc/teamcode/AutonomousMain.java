@@ -42,9 +42,9 @@ public abstract class AutonomousMain extends LinearOpMode {
         while (opModeIsActive()) {
             AprilTagDetection tag = vision.getTag(getSide() == 1 ? 24 : 20);
             if (tag != null) {
-                double drive = (tag.ftcPose.range - 61) / 40;
-                double turn = -tag.ftcPose.bearing / 30;
-                double strafe = tag.ftcPose.yaw / 22;
+                double drive = (tag.ftcPose.range - 61) / 40;//Forward movement
+                double turn = -tag.ftcPose.bearing / 30;//Rotation
+                double strafe = tag.ftcPose.yaw / 22;//Lateral Turn
 
                 if (Math.abs(drive) < 0.15 && Math.abs(turn) < 0.08 && Math.abs(strafe) < 0.1)//0.07 less tolerance
                     break;
