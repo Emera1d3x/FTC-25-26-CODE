@@ -1,25 +1,34 @@
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.IMU;
+import com.qualcomm.robotcore.hardware.Axis;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
+
 public class IMU {
     private IMU imu;
-    public IMU(HardwareMap hardwareMap){
-        imu = hardwareMap.get(IMU.class,"imu");
-        RevHubOrientationOnRobot imuOrientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,RevHubOrientationOnRobot.UsbFacingDirection.Forward);
+    AngularVelocity angularVelocity;
+    public IMU(HardwareMap hardwareMap) {
+        imu = hardwareMap.get(IMU.class, "imu");
+        RevHubOrientationOnRobot imuOrientation = new RevHubOrientationOnRobot(
+            RevHubOrientationOnRobot.LogoFacingDirection.UP,
+            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+        );
         imu.initialize(new IMU.Parameters(imuOrientation));
     }
-    public double getHeading(int indicator, AngleUnit angleunit){
-        if(indicator ==1){
-            return imu.getRobotYawPitchRollAngles.getYaw(Angleunit.degrees);
-        }
-        else if(indicator ==2){
-            return imu.getRobotYawPitchRollAngles.getRoll(Angleunit.degrees);
-        }
-        else if(indicator == 3){
-            return imu.getRobotYawPitchRollAngles.getPitch(Angleunit.degrees);
-        }
-        else{
-            break;
-        }
+
+    public double getYaw(AngleUnit angleUnit) {
+        return imu.getRobotYawPitchRollAngles().getYaw(angleUnit);
+    }
+
+    public double getRoll(AngleUnit angleUnit) {
+        return imu.getRobotYawPitchRollAngles().getRoll(angleUnit);
+    }
+
+    public double getPitch(AngleUnit angleUnit) {
+        return imu.getRobotYawPitchRollAngles().getPitch(angleUnit);
+    }
+    public double getAngularVelocity(Axis axis, AngleUnit angleUnit) {
+        return imu.getRobotAngularVelocity().getRotationRate(axis, angleUnit);
     }
 }
