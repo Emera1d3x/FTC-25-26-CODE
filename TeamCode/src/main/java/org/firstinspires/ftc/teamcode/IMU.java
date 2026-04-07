@@ -24,7 +24,6 @@ public class IMU {
     public double getRoll(AngleUnit angleUnit) {
         return imu.getRobotYawPitchRollAngles().getRoll(angleUnit);
     }
-
     public double getPitch(AngleUnit angleUnit) {
         return imu.getRobotYawPitchRollAngles().getPitch(angleUnit);
     }
