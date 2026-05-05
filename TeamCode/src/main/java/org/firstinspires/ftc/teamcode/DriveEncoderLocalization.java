@@ -69,7 +69,7 @@ public class DriveEncoderLocalization {
         this.imu = imu;
         headingOffsetDegrees = 0.0;
     }
-
+    //Resets encoders
     public void resetEncoders() {
         motorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -81,7 +81,7 @@ public class DriveEncoderLocalization {
         motorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-
+//Resets the pose to (0,0,0)
     public void resetPose() {
         xInches = 0.0;
         yInches = 0.0;
@@ -89,7 +89,7 @@ public class DriveEncoderLocalization {
         headingOffsetDegrees = 0.0;
         syncEncoderPositions();
     }
-
+    //Resets the pose to a specified position and heading (in degrees)
     public void resetPose(double xStartInches, double yStartInches, double headingDegrees) {
         xInches = xStartInches;
         yInches = yStartInches;
@@ -100,7 +100,7 @@ public class DriveEncoderLocalization {
         }
         syncEncoderPositions();
     }
-
+//Updating motor position, change in position, change in strafe, forward,  heading.
     public void update() {
         int currentFL = motorFL.getCurrentPosition();
         int currentFR = motorFR.getCurrentPosition();
@@ -116,11 +116,11 @@ public class DriveEncoderLocalization {
         lastFR = currentFR;
         lastBL = currentBL;
         lastBR = currentBR;
-
+        //Update forward and strafe
         double forward = (deltaFL + deltaFR + deltaBL + deltaBR) / 4.0;
         double strafe = (-deltaFL + deltaFR + deltaBL - deltaBR) / 4.0;
         double dHeading;
-
+        //Updating Heading
         if (imu != null) {
             double newHeadingRadians = Math.toRadians(angleWrap(getRawImuYaw() + headingOffsetDegrees));
             dHeading = smallestAngleDifference(headingRadians, newHeadingRadians);
@@ -132,7 +132,7 @@ public class DriveEncoderLocalization {
 
         double cosHeading = Math.cos(headingRadians);
         double sinHeading = Math.sin(headingRadians);
-
+        //Update x and y inches
         xInches += strafe * cosHeading - forward * sinHeading;
         yInches += strafe * sinHeading + forward * cosHeading;
     }
@@ -152,7 +152,7 @@ public class DriveEncoderLocalization {
     public double getHeadingDegrees() {
         return Math.toDegrees(headingRadians);
     }
-
+    //Set  the current pose
     public void setPose(double xInches, double yInches, double headingDegrees) {
         this.xInches = xInches;
         this.yInches = yInches;
@@ -162,7 +162,7 @@ public class DriveEncoderLocalization {
         }
         syncEncoderPositions();
     }
-
+    //Sync encoder position to current position
     private void syncEncoderPositions() {
         lastFL = motorFL.getCurrentPosition();
         lastFR = motorFR.getCurrentPosition();
@@ -176,7 +176,7 @@ public class DriveEncoderLocalization {
         }
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
-
+    //Wraps andle to [180,-180] range
     private static double angleWrap(double degrees) {
         while (degrees > 180.0) {
             degrees -= 360.0;

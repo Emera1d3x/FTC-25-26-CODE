@@ -1,3 +1,4 @@
+//This needs tuning
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -65,7 +66,7 @@ public class sampleAutoPath extends LinearOpMode {
                 // Example 7: Line to a specific point (straight line)
                 .lineTo(new Vector2d(0, 0))
 
-                .build();
+                .build();// Combine the sequence
 
         // Alternative: Build individual trajectories for more control
         Trajectory forwardTraj = drive.trajectoryBuilder(new Pose2d(0, 0, 0))
@@ -88,7 +89,7 @@ public class sampleAutoPath extends LinearOpMode {
         telemetry.addData("Status", "Following trajectory sequence");
         telemetry.update();
 
-        drive.followTrajectorySequence(mainPath);
+        drive.followTrajectorySequence(mainPath);//This executes the main path sequence
 
         // Alternative: Execute individual trajectories with actions in between
         /*
