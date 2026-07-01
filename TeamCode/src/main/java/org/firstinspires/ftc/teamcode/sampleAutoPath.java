@@ -9,8 +9,6 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -20,7 +18,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  * This is a sample Road Runner autonomous path demonstrating various trajectory types
  */
 @Config
-@Autonomous(group = "drive")
+@Autonomous(group = "org/firstinspires/ftc/teamcode/drive")
 public class sampleAutoPath extends LinearOpMode {
 
     // Starting position (adjust based on your robot's starting position)
