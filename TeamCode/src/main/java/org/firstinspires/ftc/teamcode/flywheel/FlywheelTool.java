@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.CalibrationTool;
 
 
 public class FlywheelTool {
+    //Whether Team 1 or 2
     public FlywheelTool(HardwareMap hardwareMap) {
         if (CalibrationTool.TEAM_NUMBER == 1) {
             hardware = new Team1Flywheel(hardwareMap);
